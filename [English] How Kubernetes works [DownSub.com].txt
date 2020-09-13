@@ -1,0 +1,259 @@
+[MUSIC]
+
+>> Hi. I'm Brendan,
+and I'm here to talk
+
+to you about how Kubernetes works.
+
+Fundamentally, at its base,
+
+Kubernetes is about taking a bunch of
+
+virtual machines or
+physical machines for that matter,
+
+although these days in the Cloud,
+
+I mostly think about
+virtual machines and
+
+transforming them into
+a unified API surface
+
+that a developer can interact with,
+
+with containers and orchestrate
+
+their application without really
+
+thinking about the machines
+that lie below.
+
+So, this is the Kubernetes
+API surface area.
+
+We abbreviate Kubernetes
+as k8s sometimes,
+
+it's shorter and easier to write.
+
+The eighth stands for
+the eight letters in
+
+between the K at the beginning
+and the S at the end.
+
+The Kubernetes API presents
+a bunch of different pieces.
+
+The core ones are
+
+a pod which is
+
+a collection of containers that are
+
+co-located on a single machine.
+
+Service, which is a load balancer
+
+that can bring traffic down
+to a collection of pods.
+
+Then, deployment, which under
+the hood uses a replica set which,
+
+as the name suggests,
+
+is used for replicating
+
+a container multiple times
+for availability or scale.
+
+So, this API that is presented
+is a JSON based API.
+
+So, if you have a user here who's
+interacting with Kubernetes,
+
+they use the kube control
+command line tool generally,
+
+and other tools have been written
+to interact with the API.
+
+That makes an HTTP call to the JSON
+to the Kubernetes API server.
+
+So, let's take a look
+at how we put this
+
+together to actually
+build a real application.
+
+Well, let's suppose I
+have a simple web app,
+
+it's going to be a container image,
+
+so I have my image over here.
+
+I want to create pods to actually run
+
+that image and to run my application
+on the Kubernetes API.
+
+To do that, I'm going
+to create a deployment,
+
+and so I'm going to say, "Hey,
+
+I want to create a deployment," it's
+
+represented generally as a YAML file.
+
+I'm going to create
+that, deploy.yaml.
+
+I'm going to say, "Kube control
+
+apply," and I'm going
+to give it that file,
+
+and that's going to send it
+through to the API server and
+
+the end result is that it will
+create let's say if I said,
+
+"Three replicas in here,"
+it's going to create
+
+three pods in
+
+the Kubernetes API
+
+which will result in
+the scheduler placing one,
+
+two, three containers on
+
+the virtual machines that actually
+
+act as the host machines
+for the service.
+
+But obviously, this
+is only the beginning
+
+and there is this deployment
+object over here.
+
+It is managing and
+
+ensuring that there are
+three of these replicas.
+
+This is really only the beginning.
+
+I have my application up and
+running but I need to actually
+
+expose it to someone to
+be able to consume it.
+
+To do that, I create a service.
+
+The service is
+a load balancer that knows
+
+how to take traffic either from
+
+the outside world or from
+another service inside the cluster,
+
+and load balance that traffic
+down to those containers.
+
+Now, if I want,
+
+I can actually say that this service
+
+is attached to
+an external load balancer.
+
+If it's attached to
+an external load balancer,
+
+then Kubernetes is actually
+responsible for going and talking to
+
+the Cloud and requesting
+
+that load balancer come into
+
+existence so that I
+get some IP address.
+
+That IP address is mapped
+to the Cloud load balancer.
+
+It is then mapped to the service
+and all of the traffic.
+
+So, that way, if I have
+an end-user accessing it,
+
+they can talk to
+that external IP address,
+
+traffic will flow through the
+Cloud load balancer to my service,
+
+the load balanced out
+to all my containers.
+
+In this way, if I go to
+the deployment and I
+
+actually change this
+from say three to four,
+
+the declarative nature of Kubernetes,
+
+the self-healing nature
+Kubernetes will say,
+
+"You only have three replicas
+here, I need a fourth."
+
+Traffic flows from the load balancer
+out to this fourth replica.
+
+My end-user doesn't even notice
+
+that I've scaled up the application.
+
+So, that gives you
+a really good illustration of
+
+why Kubernetes is great for
+deploying reliable applications,
+
+scalable applications
+without affecting end-users.
+
+In fact, you can actually do
+a rolling deployment where you
+
+move from version one of
+
+your container to a version two of
+
+your container in place without
+your end-user noticing at all.
+
+We'll talk more about how that
+works in the next episode.
+
+[MUSIC]
+

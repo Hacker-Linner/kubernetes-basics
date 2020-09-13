@@ -1,0 +1,319 @@
+[MUSIC]
+
+>> Hi I'm Brendan Burns
+from Microsoft Azure.
+
+Today, I have a special video.
+
+I had someone tweet
+a request me for information
+
+on how to productionize
+a system thinking
+
+about Ingress securing Namespaces,
+
+which is a great reminder.
+
+If you want to see more,
+
+we're going to do
+more of these videos.
+
+If you want to see
+more or specific topics covered,
+
+please feel free to
+send me a request.
+
+I'm @BrendanDBurns on Twitter.
+
+You can find me on
+GitHub or anywhere else,
+
+happy to work on things that
+are interesting to everybody.
+
+So the question about a cluster
+
+productionizing a service is
+a really interesting one.
+
+There's a really wide variety of
+
+things that you should
+be thinking about.
+
+So we'll talk about some
+of the general areas.
+
+The first is thinking
+about your cluster
+
+itself and remembering
+that your cluster API,
+
+and the contents of your cluster,
+
+the machines in your cluster
+
+are a security boundary
+for your application.
+
+So you want to be
+thinking about how do
+
+you properly secure that cluster.
+
+Definitely, be thinking about RBAC,
+
+and the roles of people who
+have access to that cluster.
+
+For example, you may
+want to differentiate
+
+between a developer who has read
+
+access and an operator who
+may have write access.
+
+I would think a lot about
+
+CICD pipeline that points
+to your Kubernetes cluster,
+
+and is the only way that code can be
+
+pushed into that cluster
+that really ensures that
+
+you can put process here for
+validation, vulnerability detection.
+
+Likewise, you should be
+thinking about running
+
+intrusion detection and
+vulnerability detection
+
+on the cluster itself probably via
+
+DaemonSet so that you
+
+can find things that are
+wrong with your cluster.
+
+But of course, security
+is only a part of it.
+
+You also want to be
+thinking about how do you
+
+correctly operate that cluster?
+
+How do you make sure that
+the applications you're
+
+deploying into
+Kubernetes are operable?
+
+That's where something
+like ensuring you have
+
+a good monitoring solution
+installed on the cluster,
+
+something like the Azure
+Monitor SAS solution,
+
+or an open-source ELK stack.
+
+These are things again you can
+
+install directly onto
+the cluster using a DaemonSet
+
+and ensure that you have all of
+
+these things in place so
+that when a problem happens,
+
+you're not scrambling to
+figure out how to monitor it,
+
+you're scrambling to
+figure out how to fix it.
+
+Likewise, I would think a lot about
+
+testing every single process
+that you have.
+
+So if you're going to fail over,
+
+obviously you should probably
+be in more than one region.
+
+So if you have a cluster
+in region one,
+
+and you have a cluster in region two,
+
+and you're going to
+failover in the case of
+
+a disaster from region
+one to region two,
+
+you should think about how
+
+practicing that making sure
+you can actually do it.
+
+That it's not a theoretical design,
+
+but it's actually a practical design
+that you've practiced.
+
+Practice is a big part
+
+of being good at operations
+when you go to production.
+
+It's kind of like an emergency room.
+
+You don't want it to be trying
+
+something out for the first time
+when there's a patient there,
+
+you want to be doing it ahead of
+
+time where you can
+find all the problems
+
+all the things you didn't anticipate
+
+before it's a crisis situation.
+
+Speaking of developing
+reliable applications,
+
+it's worth thinking about how
+are you actually planning
+
+on providing for
+a failure and failover.
+
+So you want to deliver
+a worldwide application,
+
+you might have myapp.com
+as a DNS entry,
+
+you can use something like
+Azure Traffic Manager to map it to
+
+different IP addresses depending
+on the geographic area.
+
+So GeoIP, this can be 24.1.2.3,
+
+this might be 128.7.8.9.
+
+This is going to go to here,
+
+this is your European cluster
+and this is your U.S. cluster,
+
+and this is going to go to Kubernetes
+cluster in Europe somewhere.
+
+This is going to go to your
+Kubernetes cluster in the U.S.
+
+But what happens if for example,
+
+the Kubernetes cluster
+in the U.S. fails?
+
+Well, you're going to
+need to be able to
+
+have appropriate health checks going
+
+from the DNS system
+
+and your cluster here so that
+if something bad happens,
+
+it will fail traffic over even from
+
+the U.S. to your European cluster.
+
+Likewise, if you have
+data stores in here,
+
+you need to think about
+how you're going to be
+
+replicating data between
+these two locations,
+
+and this is a place where
+something like Cosmos DB or some
+
+other Software as
+a Service Datastore is
+
+going to be a great choice
+for most people,
+
+because you don't want
+to be the one who's
+
+managing cross-region
+replication of data,
+
+you simply want to write
+your application to use
+
+that Datastore and allow it to
+do the replication for you.
+
+So thinking about all
+of those pieces of,
+
+how do I secure my cluster?
+
+How do I set up
+the right cluster services?
+
+Practicing things like
+failover and making
+
+sure you've architected
+your application for
+
+multiple regions and using
+
+geographic identity information
+to achieve low latency,
+
+those are all great things to be
+
+thinking about as you
+go towards production.
+
+Also, I'd focus a lot
+on the CICD pipeline.
+
+Hopefully, you set that up already,
+
+but if you're still thinking
+about how to set up CICD,
+
+we've got a number of
+other great videos on that.
+

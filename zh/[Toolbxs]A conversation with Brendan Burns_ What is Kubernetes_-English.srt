@@ -1,0 +1,737 @@
+1
+00:00:00,000 --> 00:00:03,810
+[MUSIC]
+
+2
+00:00:03,810 --> 00:00:07,455
+&gt;&gt; Kubernetes was founded almost
+seven years ago my guess,
+Kubernetes几乎成立了
+我猜七年前，
+
+3
+00:00:07,455 --> 00:00:09,255
+depending on when you
+start the clock when it
+取决于当你开始计时
+
+4
+00:00:09,255 --> 00:00:12,150
+publicly released or when
+development started.
+它何时公开发布或何时开始开发。
+
+5
+00:00:12,150 --> 00:00:14,250
+It was the three of us,
+是我们三个人
+
+6
+00:00:14,250 --> 00:00:16,589
+Joe Beda, Craig McLuckie, and myself.
+
+7
+00:00:16,589 --> 00:00:21,149
+Honestly, we were influenced
+by some internal systems.
+老实说，我们受到了一些内部系统的影响。
+
+8
+00:00:21,149 --> 00:00:25,649
+A system called Borg at Google
+that we'd been using at the time,
+我们当时一直在使用的Google Borg系统，
+
+9
+00:00:25,649 --> 00:00:28,559
+as well as our own experience
+with people trying to adopt
+
+10
+00:00:28,559 --> 00:00:31,409
+Cloud and the challenges
+of people adopting Cloud.
+以及我们自己与尝试采用云计算的人们的经验，以及采用云计算的人们所面临的挑战。
+
+
+11
+00:00:31,410 --> 00:00:35,620
+It was hard, it's too hard, right?
+很难，很难，对吗？
+
+12
+00:00:36,200 --> 00:00:38,370
+Docker came along honestly.
+Docker诚实地出现了。
+
+13
+00:00:38,369 --> 00:00:39,854
+I think without Docker,
+we couldn't have done it.
+我想没有Docker，我们就不可能做到这一点。
+
+14
+00:00:39,854 --> 00:00:42,284
+All right, so Docker lit this fire,
+好的，所以Docker点燃了这一切，
+
+15
+00:00:42,284 --> 00:00:46,869
+but we had all this experience
+about where they should go.
+但是我们对他们应该去哪里有所有的经验。
+
+16
+00:00:46,869 --> 00:00:49,159
+So we took the enthusiasm around
+
+17
+00:00:49,159 --> 00:00:51,549
+containers that Docker
+managed to generate up.
+
+18
+00:00:51,549 --> 00:00:54,019
+So Kubernetes is an orchestrator
+
+19
+00:00:54,020 --> 00:00:56,735
+for helping you with
+application development.
+
+20
+00:00:56,734 --> 00:00:59,929
+When you think about what it takes
+to deploy an application up to
+
+21
+00:00:59,929 --> 00:01:03,769
+the Cloud or even to an on-premise
+collection of machines.
+
+22
+00:01:03,770 --> 00:01:06,725
+You have to package
+up that application.
+
+23
+00:01:06,724 --> 00:01:07,939
+You have to distribute it,
+
+24
+00:01:07,939 --> 00:01:09,199
+you have to keep it running,
+
+25
+00:01:09,200 --> 00:01:11,840
+and you have load balance traffic
+
+26
+00:01:11,840 --> 00:01:13,580
+between the various pieces
+of the application.
+
+27
+00:01:13,579 --> 00:01:14,929
+Then obviously in an API
+
+28
+00:01:14,930 --> 00:01:17,555
+to introspective and find
+out what's going on.
+
+29
+00:01:17,555 --> 00:01:21,140
+Before Kubernetes there were a
+few systems bits and pieces,
+
+30
+00:01:21,140 --> 00:01:25,040
+but Kubernetes just really
+mainstreamed the idea of
+
+31
+00:01:25,040 --> 00:01:28,520
+this distributed systems
+application environment
+
+32
+00:01:28,519 --> 00:01:30,349
+for building and constructing
+
+33
+00:01:30,349 --> 00:01:32,979
+distributed systems that span
+across a bunch of machines.
+
+34
+00:01:32,980 --> 00:01:35,000
+I think Kubernetes
+really succeeded because
+
+35
+00:01:35,000 --> 00:01:38,049
+of our focus on
+community and ecosystem.
+
+36
+00:01:38,049 --> 00:01:41,914
+So I think technologically
+obviously has to work.
+
+37
+00:01:41,915 --> 00:01:44,270
+But I think that building
+
+38
+00:01:44,269 --> 00:01:46,459
+this really honestly
+amazing community
+
+39
+00:01:46,459 --> 00:01:48,769
+of people who supported each other,
+
+40
+00:01:48,769 --> 00:01:50,059
+who helped build docs,
+
+41
+00:01:50,060 --> 00:01:51,110
+who helped build tutorials,
+
+42
+00:01:51,109 --> 00:01:52,879
+who went and talked
+about it in conferences.
+
+43
+00:01:52,879 --> 00:01:54,919
+Then an ecosystem of
+companies that were
+
+44
+00:01:54,920 --> 00:01:57,760
+betting their whole company on it.
+
+45
+00:01:57,760 --> 00:01:59,390
+Startups that are saying like, well,
+
+46
+00:01:59,390 --> 00:02:00,410
+the prerequisite for using
+
+47
+00:02:00,409 --> 00:02:03,574
+my monitoring software is that
+you have a Kubernetes cluster,
+
+48
+00:02:03,575 --> 00:02:06,035
+that formed a really virtuous cycle.
+
+49
+00:02:06,034 --> 00:02:08,269
+I think the other thing
+is that it's a layer in
+
+50
+00:02:08,270 --> 00:02:10,870
+the stack that is at some
+level supposed to disappear.
+
+51
+00:02:10,870 --> 00:02:14,570
+So once it became popular enough,
+
+52
+00:02:14,569 --> 00:02:15,889
+everyone's was like, okay,
+
+53
+00:02:15,889 --> 00:02:18,169
+that decision has been
+made, let's move on.
+
+54
+00:02:18,169 --> 00:02:20,508
+All right, and so there's
+a certain amount of
+
+55
+00:02:20,508 --> 00:02:24,549
+value for the broader ecosystem
+and having a single solution.
+
+56
+00:02:24,550 --> 00:02:26,700
+Container is one of
+those words were I think
+
+57
+00:02:26,699 --> 00:02:29,959
+it means different things
+to different people,
+
+58
+00:02:29,960 --> 00:02:32,510
+or has a really broad
+set of meanings.
+
+59
+00:02:32,509 --> 00:02:35,599
+I think fundamentally,
+
+60
+00:02:35,599 --> 00:02:38,614
+it's about taking an
+application and packaging it.
+
+61
+00:02:38,615 --> 00:02:41,359
+So building of binary representation
+
+62
+00:02:41,359 --> 00:02:42,500
+of all the different pieces that you
+
+63
+00:02:42,500 --> 00:02:43,969
+need for your application,
+the software,
+
+64
+00:02:43,969 --> 00:02:46,339
+the configuration files, whatever,
+
+65
+00:02:46,340 --> 00:02:48,440
+just having a protocol for
+
+66
+00:02:48,439 --> 00:02:50,794
+distributing that application
+around the world.
+
+67
+00:02:50,794 --> 00:02:53,209
+Then once it starts
+running on a machine,
+
+68
+00:02:53,210 --> 00:02:56,150
+having a isolated playground for
+
+69
+00:02:56,150 --> 00:02:57,800
+that application to
+run so that it can't
+
+70
+00:02:57,800 --> 00:03:00,040
+interfere with other applications
+on the same machine.
+
+71
+00:03:00,039 --> 00:03:02,569
+So I think those are
+the three pillars
+
+72
+00:03:02,569 --> 00:03:04,549
+of what became known as containers.
+
+73
+00:03:04,550 --> 00:03:06,840
+How do I take everything
+and package it?
+
+74
+00:03:06,840 --> 00:03:09,910
+So it's exactly the same on my
+laptop as it is out in the Cloud.
+
+75
+00:03:09,909 --> 00:03:12,984
+How do I distribute it around
+the world really easily?
+
+76
+00:03:12,985 --> 00:03:15,620
+Then once it's running, how
+can I have an environment
+
+77
+00:03:15,620 --> 00:03:17,960
+where if I have a bug
+in one component,
+
+78
+00:03:17,960 --> 00:03:20,240
+it doesn't affect another component?
+
+79
+00:03:20,240 --> 00:03:23,990
+Those pieces are what makes up
+what it means to be a container.
+
+80
+00:03:23,990 --> 00:03:26,725
+Although different people
+have different answers.
+
+81
+00:03:26,724 --> 00:03:32,239
+Well, I'm an open source fundamentally
+means that the source code
+
+82
+00:03:32,240 --> 00:03:38,330
+for your project is available
+under an open source license.
+
+83
+00:03:38,330 --> 00:03:39,920
+So there's a consortium that
+
+84
+00:03:39,919 --> 00:03:41,734
+defines what it means
+to be open source,
+
+85
+00:03:41,735 --> 00:03:45,230
+has to do with different
+open source licenses
+
+86
+00:03:45,229 --> 00:03:46,729
+exist that have different kinds of
+
+87
+00:03:46,729 --> 00:03:49,159
+restrictions on what
+you can do with it.
+
+88
+00:03:49,159 --> 00:03:52,309
+If you make changes, if you
+have to publish those changes.
+
+89
+00:03:52,310 --> 00:03:54,530
+But fundamentally, from
+my perspective of what it
+
+90
+00:03:54,530 --> 00:03:56,180
+really means is coming
+
+91
+00:03:56,180 --> 00:04:00,225
+together as a community to
+build software in the open.
+
+92
+00:04:00,224 --> 00:04:02,429
+So it's not Microsoft
+building software,
+
+93
+00:04:02,430 --> 00:04:04,200
+or Apple building software,
+
+94
+00:04:04,199 --> 00:04:05,449
+or VMware building software,
+
+95
+00:04:05,449 --> 00:04:08,899
+it's all of us coming
+together in a global project.
+
+96
+00:04:08,900 --> 00:04:13,040
+It's Kubernetes building
+software as a project out on
+
+97
+00:04:13,039 --> 00:04:16,859
+GitHub that makes up the open source.
+
+98
+00:04:16,860 --> 00:04:18,120
+For me, that was really important.
+
+99
+00:04:18,120 --> 00:04:19,470
+It's not just about the license,
+
+100
+00:04:19,470 --> 00:04:21,275
+it's not just about the
+source being out there,
+
+101
+00:04:21,274 --> 00:04:23,419
+but it's about the community that
+
+102
+00:04:23,420 --> 00:04:26,245
+comes together to build the software.
+
+103
+00:04:26,245 --> 00:04:28,580
+But I think when we're
+talking about Cloud Native,
+
+104
+00:04:28,579 --> 00:04:29,854
+one of the things that
+we're thinking about is
+
+105
+00:04:29,855 --> 00:04:31,910
+API-driven development.
+
+106
+00:04:31,910 --> 00:04:33,860
+So you're creating stuff with an API.
+
+107
+00:04:33,860 --> 00:04:36,320
+You're not logging into a
+machine running commands,
+
+108
+00:04:36,319 --> 00:04:39,139
+you're declaring a state
+
+109
+00:04:39,139 --> 00:04:43,294
+usually these days in some
+text file like a YAML file.
+
+110
+00:04:43,295 --> 00:04:46,700
+Then you're applying that state
+to the world and you're letting
+
+111
+00:04:46,699 --> 00:04:48,499
+some other system take responsibility
+
+112
+00:04:48,500 --> 00:04:51,700
+for making reality match up
+with your declared state.
+
+113
+00:04:51,699 --> 00:04:54,679
+So this has been called
+Infrastructure as code
+
+114
+00:04:54,680 --> 00:04:57,845
+or a bunch of other kind of
+buds words associated with it.
+
+115
+00:04:57,845 --> 00:04:59,630
+I think the other
+part of Cloud Native
+
+116
+00:04:59,629 --> 00:05:02,999
+is this idea of elastic scale, right?
+
+117
+00:05:03,000 --> 00:05:05,870
+That I can immediately get
+more resources if I need them,
+
+118
+00:05:05,870 --> 00:05:08,820
+I can immediately
+throw away resources.
+
+119
+00:05:08,920 --> 00:05:12,870
+I think of Cloud is
+being a better version
+
+120
+00:05:12,870 --> 00:05:15,920
+of an online computer retailer
+where like used to be,
+
+121
+00:05:15,920 --> 00:05:17,510
+you can get a computer in a day and
+
+122
+00:05:17,509 --> 00:05:19,209
+you had to go through
+some return policy.
+
+123
+00:05:19,209 --> 00:05:20,959
+Well, with Cloud you can get it in
+
+124
+00:05:20,959 --> 00:05:23,869
+a few seconds and you can
+give it back and immediately.
+
+125
+00:05:23,870 --> 00:05:25,505
+So run it for two minutes,
+
+126
+00:05:25,504 --> 00:05:27,629
+put it away, don't pay
+for it ever again.
+
+127
+00:05:27,629 --> 00:05:29,719
+I think that's a
+fundamental characteristic
+
+128
+00:05:29,720 --> 00:05:31,700
+of what it means to be Cloud
+Native because they're now
+
+129
+00:05:31,699 --> 00:05:33,109
+development patterns that assume
+
+130
+00:05:33,110 --> 00:05:38,030
+that I can create a complete
+copy of my infrastructure and
+
+131
+00:05:38,029 --> 00:05:40,069
+then throw away my old copy without
+
+132
+00:05:40,069 --> 00:05:44,449
+any real effect on me in terms
+of price or anything else.
+
+133
+00:05:44,449 --> 00:05:47,379
+That's what it means for
+me to be Cloud Native.
+
+134
+00:05:47,379 --> 00:05:50,579
+Well, people keep saying the
+future of Kubernetes is boring.
+
+135
+00:05:50,579 --> 00:05:53,209
+Like it's supposed
+to be disappearing.
+
+136
+00:05:53,209 --> 00:05:54,589
+It keeps sort of not disappearing.
+
+137
+00:05:54,589 --> 00:05:57,239
+But I keep thinking it's
+going to disappear.
+
+138
+00:05:57,259 --> 00:05:59,809
+That's because it's present in
+
+139
+00:05:59,810 --> 00:06:01,580
+every major public
+Cloud at this point.
+
+140
+00:06:01,579 --> 00:06:04,744
+It's become something that
+people just expect to be there.
+
+141
+00:06:04,745 --> 00:06:07,750
+So people are really focused
+on what do you build above it.
+
+142
+00:06:07,750 --> 00:06:09,950
+I think one of the decisions
+early on that we made those
+
+143
+00:06:09,949 --> 00:06:13,884
+really foresightful was to
+make it very extensible.
+
+144
+00:06:13,884 --> 00:06:15,909
+So that people could
+add on new components.
+
+145
+00:06:15,910 --> 00:06:17,695
+So people could make it their own.
+
+146
+00:06:17,694 --> 00:06:22,464
+I think that's the future is the
+stuff that gets built on top.
+
+147
+00:06:22,464 --> 00:06:25,869
+As more developer tooling and as
+
+148
+00:06:25,870 --> 00:06:28,705
+more experiences get
+built on top, I think,
+
+149
+00:06:28,704 --> 00:06:31,754
+I hope that the underlying
+Kubernetes bits is kind of
+
+150
+00:06:31,754 --> 00:06:35,069
+fade, like X86 fades.
+
+151
+00:06:35,069 --> 00:06:36,579
+Where nobody really
+talks about like what's
+
+152
+00:06:36,579 --> 00:06:39,289
+the processor architecture
+instruction set that you're running?
+
+153
+00:06:39,290 --> 00:06:41,080
+It's there, obviously it's important,
+
+154
+00:06:41,079 --> 00:06:44,859
+but it's not part of what you
+think about on the day to day.
+
+155
+00:06:44,860 --> 00:06:47,500
+I hope that's the future
+for Kubernetes as well
+
+156
+00:06:47,500 --> 00:06:51,229
+because there's so much
+more that we need to build.
+

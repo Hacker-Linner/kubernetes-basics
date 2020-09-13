@@ -1,0 +1,352 @@
+[MUSIC].
+
+>> Hi.
+
+Brendan Burns from Microsoft Azure
+and I'm going to talk about
+
+the basics of stateful
+applications in Kubernetes.
+
+So with any stateful applications,
+
+you're going to need to
+think about how you do
+
+data resiliency and data replication.
+
+In some cases, there's
+applications like
+
+MySQL that are actually quite
+difficult to do data replication.
+
+You can do clustered MySQL,
+
+but it's not the standard setup.
+
+With that in mind, in Kubernetes,
+
+you probably are going to do
+the same thing you would do with
+
+MySQL in general and
+run a single instance
+
+of your MySQL server associated
+with a persistent volume.
+
+This persistent volume is going to be
+
+attached to Cloud-based storage,
+
+like Azure Disk, or on-prem,
+
+it might be attached to
+something like ISCSI.
+
+In either case, that's going to be
+
+responsible for
+maintaining the state of
+
+your application even if
+your MySQL pod happens to
+
+move from machine one to machine two.
+
+But when we start thinking about
+more Cloud-native applications,
+
+something like Cassandra or MongoDB,
+
+where replication is
+easier to achieve,
+
+then we need to start thinking about
+
+the primitives within Kubernetes.
+
+Now when Kubernetes started,
+
+the only sort of way
+that you could do
+
+replication was using something
+called a replica set.
+
+With a replica set,
+
+every single replica was
+treated entirely identically.
+
+They have random hashes on the end
+of their application names.
+
+And if a scaling event happens,
+
+for example a scaled down,
+
+a container is chosen
+at random and deleted.
+
+These characteristics
+make replica set very
+
+hard to map to stateful applications.
+
+In particular, many
+stateful applications
+
+expect their host names
+to be constant.
+
+Sometimes you need to find a master
+or a root node to start from,
+
+a seed node to start from.
+
+So those complexities of
+using replica sets and
+
+stateful applications led to
+
+the eventual development
+of stateful set.
+
+A stateful set in Kubernetes,
+
+it's similar to a replica set,
+
+but it adds some guarantees
+that makes it easier to
+
+manage stateful applications
+inside of Kubernetes.
+
+In particular, with a stateful set,
+
+the replicas have indices.
+
+So we know that this is replica zero.
+
+You know that this is replica one.
+
+You know that this is replica two.
+
+They have stable host names.
+
+So something like
+my server zero and so on.
+
+When Kubernetes decides to scale
+up or scale down a stateful set,
+
+it does it in a well understood way.
+
+For example, when
+you initially create
+
+a stateful set the first
+replica is created,
+
+and Kubernetes waits for
+it to become healthy and
+
+available before creating
+the second replica.
+
+This means that when
+the second replica is being created,
+
+you can depend on the fact that
+
+the zeroth index is available
+for you to connect to.
+
+The same thing when
+the first replica becomes healthy
+
+the next replica will be created,
+
+and it likewise can point back to
+
+the original member
+of the stateful set.
+
+This makes it much
+easier to rendezvous to
+
+declare an initial leader,
+
+and many other things
+that are necessary when
+
+you're creating
+stateful applications.
+
+Likewise, when you scale
+down Kubernetes will
+
+also delete starting
+at the highest index.
+
+So if you scale this from
+three replicas to two replicas,
+
+it's going to start by depleting
+this replica index two over here.
+
+This again makes it
+easier to control the way
+
+that an application behaves
+on a scale down event.
+
+Stateful sets also provide
+for the ability to
+
+develop DNS names that actually
+target individual replicas.
+
+So with a replica set,
+
+you might have a service,
+
+and it would target a replica set.
+
+Maybe this is called front end.
+
+This creates a DNS entry,
+
+but it only creates
+a DNS entry for front end.
+
+If you're using a stateful set,
+
+you can actually create
+a service such that you get
+
+a DNS entry for maye Cassandra,
+
+which would go to any of the
+replicas of the Cassandra cluster,
+
+but you also get
+cassandra zero.cassandra,
+
+and likewise dash one dash
+two and for each replica.
+
+This means that if
+you don't care which
+
+replica of the stateful application
+
+you want to go to, for example,
+
+reading from this Cassandra cluster,
+
+you can always use
+this service and you'll get
+
+load balancing and everything
+else that you expect.
+
+But if you need to know
+a specific replica,
+
+you can still use naming
+to discover a pointer
+
+to each specific index
+in the stateful set.
+
+That also makes it easier for you
+to configure your application,
+
+configure a client that
+may need an explicit list.
+
+Because this host name
+stays stable as well,
+
+no matter how you scale
+up or scale down,
+
+you can be assured that
+these DNS names will
+
+always stay constant for as long
+as that stateful set lives.
+
+But again obviously, when you're
+creating these stateful sets,
+
+you're going to be thinking
+about persistence as well.
+
+In some cases, using
+local persistence may be okay.
+
+There are Cloud-native storage
+applications out there,
+
+and Cassandra is a great example,
+
+where there's actually
+replication going on
+
+between the replicas by
+the application itself.
+
+In that world, you may not need
+to use persistent volumes because
+
+the data itself is replicated
+
+between all of the members
+of the cluster.
+
+But if you do choose to
+use persistent volume,
+
+you're going to need to use
+persistent volume claims.
+
+A persistent volume claim in
+the context of your stateful set,
+
+so that when that stateful set is
+
+created and each replica is created,
+
+Kubernetes will go ahead and create
+
+a different disk for each replica
+in the stateful set.
+
+So hopefully that gives
+you an illustration of how
+
+stateful applications are
+developed in Kubernetes,
+
+how you can use
+either a singleton pattern for
+
+more traditional
+stateful applications
+
+or the Cloud-native stateful set
+
+resource that's available in
+Kubernetes with or without
+
+persistent volumes to develop
+
+their stateful applications
+inside of Kubernetes.
+
+[MUSIC].
+

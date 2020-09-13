@@ -1,0 +1,367 @@
+[MUSIC]
+
+>> Hi, I'm Brendan Burns
+from Microsoft Azure,
+
+and we're going to talk about
+
+Kubernetes and
+configuration management.
+
+When you think about
+configuration management,
+
+it's helpful to think about
+
+the problem that we're
+trying to solve.
+
+When people first defined their pod
+and their container image,
+
+I think they often think
+well you know what,
+
+configuration can just be a part
+
+of the container image that I deploy.
+
+But I think it's useful to think
+of the pod in the container image
+
+just like you would think of a
+function in a programming language.
+
+Just like a function has parameters,
+
+you should think about
+a configuration for
+
+your application
+providing the parameters
+
+for your container image.
+
+The reason for this is
+because of you want
+
+to create images that
+are general purpose.
+
+They're useful in
+a variety of scenarios.
+
+You may have different
+configurations in
+
+Canary environment where you're
+
+testing a particular configuration.
+
+As you deploy to
+a worldwide configuration,
+
+you may want to parameterize
+your image with different languages,
+
+different images, all sorts of
+
+different small variations that you
+
+want while still
+using the same build,
+
+the same continuous delivery
+to define the image itself.
+
+Fortunately in Kubernetes, there's
+a resource to represent this,
+
+and it's known as a ConfigMap.
+
+A ConfigMap resource is
+a collection of key value pairs.
+
+Those key value pairs can be
+something like a language, of EN_US.
+
+So really just string string pairs,
+
+or they might also be something like
+
+a properties file in
+a traditional Java application,
+
+and the configuration value is
+
+actually the value
+of the file itself.
+
+Now when you think about
+consuming this ConfigMap
+
+after it's been created inside
+of the Kubernetes API server,
+
+you can mount that ConfigMap as
+a volume into the pod itself.
+
+Then once you create the volume
+associated with the pod you can
+
+then mount it into your container
+at a particular directory.
+
+Depending on whether your
+ConfigMap is representing
+
+a single file or
+a collection of files,
+
+you either map it into a directory
+where each file becomes
+
+a sub file within that directory
+
+or it maps to a specific file in
+the context of the container.
+
+Now, that's useful for
+configuration that is a file.
+
+But what about configuration that
+is just a simple key-value pair.
+
+Well, in that context you can
+also use environment variables.
+
+Such that, and point
+those environment variables at
+
+your configuration map such that in
+
+your code you can say
+something like get
+
+elve and gain access
+
+to the configuration that you
+stored it into the ConfigMap.
+
+Now the question that you should
+
+have is well what about
+something like a password?
+
+It might seem like a password is
+a configuration value as well.
+
+But in fact, because
+passwords and other kinds of
+
+secrets are well,
+conceptually configuration,
+
+something that you want to be very
+
+careful about the management of and
+
+possibly use different access control
+
+in different sorts of settings.
+
+Kubernetes actually treats
+config and secrets as
+
+separate objects even though they
+
+look and operate largely the same.
+
+So when you're thinking about
+
+configuring your secrets
+you should use a Kubernetes
+
+secret instead of a Config
+Map for storing certificates,
+
+database, passwords,
+and all that stuff.
+
+Now, the next
+interesting question is,
+
+how should you think about rolling
+
+out configuration in Kubernetes?
+
+It's often been said
+that configuration is
+
+code and it really should
+be treated as such.
+
+You can easily have an application,
+
+that it's totally healthy,
+
+provide it with a new configuration,
+
+and cause that application to crash.
+
+So in that context you want
+to be able to perform a roll
+
+out of your configuration
+just like you would
+
+perform a roll out
+of your application.
+
+Fortunately, you can do this.
+
+So you might have your application
+V1 with ConfigMap,
+
+and you have this
+defined in a deployment.
+
+Well, if you keep the container
+image the same but you change
+
+the configuration map
+that's mapped as
+
+a volume into your container.
+
+So let's say we change this
+instead to be Config two.
+
+Well, it turns out that actually
+
+the deployment engine is going to
+notice that change and actually
+
+perform the same kind of
+rolling update that it
+
+does if you change
+the container image.
+
+So in particular, if in the
+template spec for your deployment,
+
+you change the configuration to
+
+point to a new configuration
+object and these
+
+are configuration map
+resources, Cfg1 and Cfg2.
+
+You've already created, so you have
+
+two different ConfigMap resources.
+
+If you change the ConfigMap in
+
+the specification of
+your application,
+
+Kubernetes will actually start doing
+
+the same kind of rolling upgrade.
+
+Eventually, you'll get to
+
+a world assuming everything
+happens correctly,
+
+where you've rolled out that
+
+new configuration with
+proper health testing,
+
+with all of the things that you would
+
+associate with an image roll out.
+
+So the deployment API
+actually makes it
+
+very easy for you to manage
+
+the deployment of
+new configurations just
+
+like you manage
+the deployment of new images.
+
+You should absolutely run
+them through the same kind of
+
+continuous validation
+and testing that you
+
+do with an image
+prior to even getting
+
+to the roll-out stage in
+the context of Kubernetes.
+
+The final piece that you should
+be thinking about is templating.
+
+So when you think
+about configuration,
+
+it's great to create
+these ConfigMaps,
+
+but in many cases you want
+the configuration to be largely the
+
+same but a little bit different
+depending on your environment.
+
+So you might have
+a high level template and
+
+two configurations East and
+
+West that extend from that template
+and add some extra value.
+
+When you're thinking
+about templating and
+
+configuration management
+in that context,
+
+a tool-like helm can provide
+
+a lot of templating
+capabilities and you can
+
+find out more information
+that helm.sh.
+
+Hope that gives you
+an early intro into
+
+why you might be motivated to
+separate your application and
+
+configuration and how you can use
+
+ConfigMaps to represent
+configuration information,
+
+bring them into
+your containers and then
+
+ultimately roll them out
+to your applications.
+
+[MUSIC]
+

@@ -1,0 +1,411 @@
+[MUSIC]
+
+&gt;&gt; Kubernetes was founded almost
+seven years ago my guess,
+
+depending on when you
+start the clock when it
+
+publicly released or when
+development started.
+
+It was the three of us,
+
+Joe Beda, Craig McLuckie, and myself.
+
+Honestly, we were influenced
+by some internal systems.
+
+A system called Borg at Google
+that we'd been using at the time,
+
+as well as our own experience
+with people trying to adopt
+
+Cloud and the challenges
+of people adopting Cloud.
+
+It was hard, it's too hard, right?
+
+Docker came along honestly.
+
+I think without Docker,
+we couldn't have done it.
+
+All right, so Docker lit this fire,
+
+but we had all this experience
+about where they should go.
+
+So we took the enthusiasm around
+
+containers that Docker
+managed to generate up.
+
+So Kubernetes is an orchestrator
+
+for helping you with
+application development.
+
+When you think about what it takes
+to deploy an application up to
+
+the Cloud or even to an on-premise
+collection of machines.
+
+You have to package
+up that application.
+
+You have to distribute it,
+
+you have to keep it running,
+
+and you have load balance traffic
+
+between the various pieces
+of the application.
+
+Then obviously in an API
+
+to introspective and find
+out what's going on.
+
+Before Kubernetes there were a
+few systems bits and pieces,
+
+but Kubernetes just really
+mainstreamed the idea of
+
+this distributed systems
+application environment
+
+for building and constructing
+
+distributed systems that span
+across a bunch of machines.
+
+I think Kubernetes
+really succeeded because
+
+of our focus on
+community and ecosystem.
+
+So I think technologically
+obviously has to work.
+
+But I think that building
+
+this really honestly
+amazing community
+
+of people who supported each other,
+
+who helped build docs,
+
+who helped build tutorials,
+
+who went and talked
+about it in conferences.
+
+Then an ecosystem of
+companies that were
+
+betting their whole company on it.
+
+Startups that are saying like, well,
+
+the prerequisite for using
+
+my monitoring software is that
+you have a Kubernetes cluster,
+
+that formed a really virtuous cycle.
+
+I think the other thing
+is that it's a layer in
+
+the stack that is at some
+level supposed to disappear.
+
+So once it became popular enough,
+
+everyone's was like, okay,
+
+that decision has been
+made, let's move on.
+
+All right, and so there's
+a certain amount of
+
+value for the broader ecosystem
+and having a single solution.
+
+Container is one of
+those words were I think
+
+it means different things
+to different people,
+
+or has a really broad
+set of meanings.
+
+I think fundamentally,
+
+it's about taking an
+application and packaging it.
+
+So building of binary representation
+
+of all the different pieces that you
+
+need for your application,
+the software,
+
+the configuration files, whatever,
+
+just having a protocol for
+
+distributing that application
+around the world.
+
+Then once it starts
+running on a machine,
+
+having a isolated playground for
+
+that application to
+run so that it can't
+
+interfere with other applications
+on the same machine.
+
+So I think those are
+the three pillars
+
+of what became known as containers.
+
+How do I take everything
+and package it?
+
+So it's exactly the same on my
+laptop as it is out in the Cloud.
+
+How do I distribute it around
+the world really easily?
+
+Then once it's running, how
+can I have an environment
+
+where if I have a bug
+in one component,
+
+it doesn't affect another component?
+
+Those pieces are what makes up
+what it means to be a container.
+
+Although different people
+have different answers.
+
+Well, I'm an open source fundamentally
+means that the source code
+
+for your project is available
+under an open source license.
+
+So there's a consortium that
+
+defines what it means
+to be open source,
+
+has to do with different
+open source licenses
+
+exist that have different kinds of
+
+restrictions on what
+you can do with it.
+
+If you make changes, if you
+have to publish those changes.
+
+But fundamentally, from
+my perspective of what it
+
+really means is coming
+
+together as a community to
+build software in the open.
+
+So it's not Microsoft
+building software,
+
+or Apple building software,
+
+or VMware building software,
+
+it's all of us coming
+together in a global project.
+
+It's Kubernetes building
+software as a project out on
+
+GitHub that makes up the open source.
+
+For me, that was really important.
+
+It's not just about the license,
+
+it's not just about the
+source being out there,
+
+but it's about the community that
+
+comes together to build the software.
+
+But I think when we're
+talking about Cloud Native,
+
+one of the things that
+we're thinking about is
+
+API-driven development.
+
+So you're creating stuff with an API.
+
+You're not logging into a
+machine running commands,
+
+you're declaring a state
+
+usually these days in some
+text file like a YAML file.
+
+Then you're applying that state
+to the world and you're letting
+
+some other system take responsibility
+
+for making reality match up
+with your declared state.
+
+So this has been called
+Infrastructure as code
+
+or a bunch of other kind of
+buds words associated with it.
+
+I think the other
+part of Cloud Native
+
+is this idea of elastic scale, right?
+
+That I can immediately get
+more resources if I need them,
+
+I can immediately
+throw away resources.
+
+I think of Cloud is
+being a better version
+
+of an online computer retailer
+where like used to be,
+
+you can get a computer in a day and
+
+you had to go through
+some return policy.
+
+Well, with Cloud you can get it in
+
+a few seconds and you can
+give it back and immediately.
+
+So run it for two minutes,
+
+put it away, don't pay
+for it ever again.
+
+I think that's a
+fundamental characteristic
+
+of what it means to be Cloud
+Native because they're now
+
+development patterns that assume
+
+that I can create a complete
+copy of my infrastructure and
+
+then throw away my old copy without
+
+any real effect on me in terms
+of price or anything else.
+
+That's what it means for
+me to be Cloud Native.
+
+Well, people keep saying the
+future of Kubernetes is boring.
+
+Like it's supposed
+to be disappearing.
+
+It keeps sort of not disappearing.
+
+But I keep thinking it's
+going to disappear.
+
+That's because it's present in
+
+every major public
+Cloud at this point.
+
+It's become something that
+people just expect to be there.
+
+So people are really focused
+on what do you build above it.
+
+I think one of the decisions
+early on that we made those
+
+really foresightful was to
+make it very extensible.
+
+So that people could
+add on new components.
+
+So people could make it their own.
+
+I think that's the future is the
+stuff that gets built on top.
+
+As more developer tooling and as
+
+more experiences get
+built on top, I think,
+
+I hope that the underlying
+Kubernetes bits is kind of
+
+fade, like X86 fades.
+
+Where nobody really
+talks about like what's
+
+the processor architecture
+instruction set that you're running?
+
+It's there, obviously it's important,
+
+but it's not part of what you
+think about on the day to day.
+
+I hope that's the future
+for Kubernetes as well
+
+because there's so much
+more that we need to build.
+

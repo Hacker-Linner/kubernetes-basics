@@ -1,0 +1,299 @@
+[MUSIC].
+
+>> Hi, I'm Brendan and
+today we are going to
+
+be talking about operators.
+
+Well, I want to cast your
+mind back a little bit
+
+to the beginnings of computing.
+
+We used to have a big machine
+
+and you might even have a punch card,
+
+and there was an actual person
+
+who was the operator
+of that computer.
+
+Now over time and that person was
+
+responsible for
+managing the computer,
+
+running punch cards, and
+everything else like that.
+
+Now over time, that person and
+
+their duties went into
+
+a program that became known
+as an operating system.
+
+That human no longer
+ran the computer,
+
+the operating system was on the
+computer to run the computer.
+
+With containers and Kubernetes
+what we're actually
+
+seeing is the same pattern
+is repeating itself again.
+
+So we might have a Kubernetes
+cluster over here,
+
+and you might want to
+do something like run
+
+a database, maybe it's MySQL.
+
+Well, traditionally if someone
+is running a database,
+
+you had a database administrator or
+
+a database operator who is a person,
+
+who is responsible for the care
+and feeding of that database,
+
+doing a backup, doing
+a schema migration,
+
+doing a creation of a new database,
+
+all of these sorts of
+tasks associated with
+
+keeping that database up
+and running correctly.
+
+What we're finding with
+Kubernetes is that just as
+
+before when the operator
+became the operating system,
+
+the operator of the database is
+becoming a Kubernetes operator.
+
+Which again is a program that
+
+is responsible for
+managing these databases.
+
+Well, how does this
+actually work and practice?
+
+One of the prime things that has
+
+made Kubernetes so
+successful in this space,
+
+is the fact that it
+is highly extensible.
+
+Kubernetes has a set of core
+APIs that are built into
+
+the system itself but it also
+has a bunch of primitives in it,
+
+that allow you to add
+
+new APIs to the system
+itself while it's running.
+
+That capability is the key
+behind the development of
+
+operators because in particular
+when you create an operator,
+
+it's just a Pod that happens to
+be running on the cluster itself.
+
+The very first thing that it
+might register is going to be
+
+a new API and this API
+might be databases/MySQL.
+
+Now, a user using kube-controller,
+
+any of the other tools that
+they're familiar with for managing
+
+Kubernetes like Helm
+or anything else,
+
+can actually now come up to the
+Kubernetes cluster and say, "Hey,
+
+I would like you to create a new
+
+database," When that new API object
+
+comes into existence
+inside of Kubernetes,
+
+so there's a new database
+object here, the operator,
+
+this is the operator code,
+
+notices this new resource
+has been created,
+
+notices that someone has requested
+that this database be created,
+
+and it actually schedules
+
+even more Pods onto
+
+the same cluster to create
+that MySQL database.
+
+But just as with everything
+inside of Kubernetes,
+
+we don't just have operators
+
+create containers or
+create a database,
+
+they're actually an online
+self-healings kind of system.
+
+So we are thinking always about
+
+the desired state and
+the current state,
+
+and the process of going from desired
+
+driving current state
+to match desired state.
+
+This is again what the
+operator is doing.
+
+So if for example your
+database has a problem,
+
+the operator can take
+a step to correct it.
+
+If you request a backup,
+
+the operator will take steps to
+back it up on a particular cycle.
+
+If it suffers a failure,
+
+that operator will use the backup to
+
+restore it onto a new container.
+
+So it is not simply an install but
+
+is in fact an online system
+just like the human would be,
+
+to ensure that your database
+or whatever system you're
+
+running is current,
+up-to-date, and healthy.
+
+Now when we're thinking
+about operators,
+
+obviously replacing a
+great deal of trust
+
+into that piece of code and so
+
+it's important for people to choose
+
+operators that are well
+known and well written.
+
+In many cases, these
+are actually released
+
+by the software
+developers themselves.
+
+So the people who are
+responsible for systems like
+
+CouchDB or any other sort of
+
+many other open-source
+storage providers,
+
+actually also supply
+an operator that is
+
+a Kubernetes object that
+can do a really good job,
+
+monitoring and maintaining
+that software for you.
+
+In other cases, there's a community
+developing around building
+
+a really great operator for MySQL
+or any number of other things.
+
+So you can go out just like you would
+
+with any other piece of
+infrastructure that you
+
+install on your cluster and find
+out via community websites,
+
+GitHub and many other places,
+
+the best operator for
+
+the particular piece of
+software that you want to
+
+run and then obviously give it
+
+a try and canary before
+pushing to production.
+
+Because although an operator
+makes it really awesome
+
+to get started with one
+of these storage systems,
+
+you do still want to have
+a sense of how it works
+
+before you start taking a
+critical dependency on it.
+
+I hope that gives you a
+perspective about operators,
+
+how they interact with Kubernetes,
+
+and how to go about finding them.
+
+[MUSIC]
+

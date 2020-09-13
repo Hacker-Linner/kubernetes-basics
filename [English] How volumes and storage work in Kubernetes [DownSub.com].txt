@@ -1,0 +1,263 @@
+[MUSIC].
+
+>> Hi.
+
+I'm Brendan Burns from Microsoft
+Azure and I'm going to talk
+
+about how volumes and
+storage work in Kubernetes.
+
+Obviously in Kubernetes,
+the base unit is a pod.
+
+Within that pod can be
+one or more containers.
+
+But if you want to start
+talking about storage,
+
+you're starting to
+talk about volumes.
+
+A volume is a separate object
+
+defined within the context
+of the Kubernetes pod.
+
+The volume is associated
+with the pod but
+
+then mounted into a container
+at a particular path.
+
+It can actually be mounted into
+
+one of the other containers
+in that pod at
+
+a different path or
+
+you might choose not to mount
+it into that container at all.
+
+In Kubernetes, there's
+a really wide variety
+
+of different volume implementations,
+
+from the simplest volume which is
+
+a temporary volume that's
+associated with the pod.
+
+It's called empty Dir,
+
+where the lifespan of this volume
+
+is associated with the pod itself.
+
+The directory itself
+is simply present on
+
+the machine where the pod is located.
+
+So really just for caching
+and temporary information
+
+maybe coordination between
+
+different containers
+in the application.
+
+All the way through cloud mounted
+directories that are persistent
+
+across the lifespan of
+
+multiple pods possibly
+even multiple clusters.
+
+So how does all that fit together?
+
+Well, in Kubernetes
+beyond empty Dir and host
+
+path and other volume types
+
+that are associated with
+the cluster itself,
+
+there's this idea of
+a persistent volume.
+
+A persistent volume is another
+resource type within Kubernetes,
+
+and a persistent volume
+can be mapped to something
+
+like Azure Disk or NFS,
+
+ISCSI or any number of other
+persistent volume types.
+
+The important
+distinction here is that
+
+these disks live longer than
+the lifespan of the pod.
+
+When the pod dies if
+it changes machines,
+
+these disks will follow it around.
+
+So for example, if I have
+this is machine one,
+
+this is machine two,
+
+and I have a pod running
+on that machine.
+
+It has a volume that is
+attached to that pod.
+
+If this machine happens to
+fail and this pod moves
+
+onto machine two the volume will
+likewise move onto machine two.
+
+But when you combine this
+persistent volume with replication,
+
+things get a little bit complicated
+because the replica spec
+
+in a replica set or in
+
+a deployment has to have
+information about the volume.
+
+But obviously,
+each volume is different.
+
+Each volume is independent,
+
+so you can't define
+
+all of the volumes in
+the context of a replica set.
+
+So in order to do that
+Kubernetes introduces
+
+this idea of a
+persistent volume claim.
+
+The idea behind a
+persistent volume claim is
+
+that it is responsible for
+saying, "Hey you know what?
+
+I want aspirationally something
+like 10 gigabytes of disk."
+
+It's not a literal disk
+that is backed.
+
+It's more of an assertion
+of a need for a disk.
+
+This way I can say I want three pods.
+
+They all have a
+persistent volume claim that
+
+requests 10 gigabytes of disk
+and when Kubernetes sees that,
+
+it's going to create
+those pods obviously.
+
+But it's also going to create
+
+three independent persistent volumes
+
+and mount those disks
+into the container.
+
+Now the good thing about
+this is not only does
+
+this provide for this replication,
+
+but also the persistent volume
+claim and persistent volume become
+
+a abstraction between you and
+
+a cloud-based storage
+system or really
+
+between you and any storage system.
+
+So this persistent volume claim
+on different clusters
+
+in one cluster could be
+satisfied perhaps by Azure Disk.
+
+In another cluster, it might
+be satisfied by ISCSI.
+
+In another cluster, it
+might even be satisfied by
+
+another public cloud
+provider's disk product.
+
+So you can write a template that will
+
+operate across clouds even
+across public cloud and
+
+private cloud or even onto
+an on-prem environment where
+
+maybe this is being provided
+by network attached storage.
+
+It's a real way that you can use
+
+the same template across a wide
+variety of hybrid environments.
+
+Again, when you create
+
+a persistent volume claim much
+like the rest of Kubernetes,
+
+you're declaring what
+you need rather than
+
+the specifics of how
+you implement it and
+
+you're allowing the
+clusters automation to take
+
+responsibility for
+providing the disks to you.
+
+Hopefully, that gives you
+a little bit of an illustration of
+
+how persistent volumes and storage
+work inside of Kubernetes.
+
+[MUSIC]
+

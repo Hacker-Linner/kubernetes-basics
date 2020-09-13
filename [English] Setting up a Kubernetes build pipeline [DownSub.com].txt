@@ -1,0 +1,323 @@
+>> Hi, I'm Brendan and I'm
+going to talk today about
+
+creating Kubernetes build pipelines.
+
+Well, obviously when you're
+talking about deploying
+
+a container to Kubernetes,
+
+you know you have two things.
+
+Over here you have a container image,
+
+and over here you have
+a Kubernetes cluster.
+
+What we're going to cover
+today really is how do you get
+
+all the way from one to the other
+
+and how do you connect
+the pieces together?
+
+In reality, actually you don't even
+
+necessarily start with
+a container image.
+
+You actually start with source code.
+
+So you're going to
+have source code in
+
+a Git Repository somewhere
+
+and you have your Kubernetes
+cluster over here.
+
+Now, you're going to have
+a Container Registry.
+
+Probably that's up in the cloud like
+
+the Azure Container Registry or
+
+whatever Container Registry
+you happen to be using.
+
+What you're going to
+be thinking about is,
+
+how do you control access
+to pushing images into
+
+that registry and how do
+you configure your cluster
+
+to only pull images
+from that registry?
+
+So the first thing
+we'll talk about is,
+
+how do I set up my Kubernetes
+cluster so that it
+
+only uses images from
+the Azure Container Registry?
+
+Well, the right way to
+think about doing this,
+
+is Kubernetes has something
+
+that's called an
+Admissions Controller.
+
+An Admissions Controller is
+
+basically a little piece of
+code that you can run that
+
+runs when every request comes
+
+into the cluster to
+validate that request.
+
+In this particular case what
+we're going to validate
+
+is that the image field for
+
+any container starts
+with myregistry.acr.io.
+
+All right. So every image has
+to be this and then slash star.
+
+This ensures that only containers
+that are created and pushed
+
+into this Azure Container Registry
+
+can be executed on
+this Kubernetes cluster.
+
+That's great for image provenance,
+
+for security and ensuring you
+
+understand where all of the images
+in your cluster come from.
+
+Now, writing your own
+Admission Controller is
+
+not too complicated but
+it can be a little bit
+
+daunting and so we've
+actually also created
+
+a Kubernetes Policy Controller
+
+which is an easy to use
+implementation of one of
+
+these Admissions Controllers
+that you can use to
+
+implement policies like this or
+many other sorts of compliance and
+
+other sorts of rules that you want to
+
+apply to every object that's
+created in your cluster.
+
+All right. So by using
+this admission controller,
+
+we've ensured that only images from
+
+our repository are
+flowing into Kubernetes.
+
+But what else do we need to do?
+
+Well obviously we've got
+
+a build pipeline that's
+
+listening to our source control
+and it's going to build images.
+
+So it's going to turn this
+into the container image.
+
+Now what we're going
+to think about is,
+
+well, who has the accolades,
+
+who has the permissions to
+
+write into the Azure
+Container Registry?
+
+Well in reality, you want
+
+that key to only be present
+in your build pipeline.
+
+Nobody except for
+your build pipeline should have
+
+permissions to push containers
+into your registry.
+
+Remembering of course that
+we've restricted who can
+
+pull images in your cluster
+to this registry.
+
+So anyone who has keys
+to push images in
+
+effectively has permissions to run
+things inside of your cluster.
+
+Giving that privilege to
+your in-developers doesn't
+
+really make sense
+because it enables them
+
+to run arbitrary containers not just
+
+containers that you know I've
+been through your build pipeline.
+
+So we'll take the key to
+
+your Azure Container
+Registry and we'll
+
+place it only in the build pipeline.
+
+That means that the build pipeline
+has the ability to
+
+push images into your registry
+but nobody else does.
+
+Likewise, when you're thinking
+about setting up the accolades over
+
+here to create containers,
+
+to create pods you also
+want those keys to
+
+be present in your build
+environment and nowhere else.
+
+Because again once that container
+image has been built the
+
+only one want you want to be
+actually creating new containers,
+
+creating new applications in
+
+your environment is that
+the build pipeline as well.
+
+It's applying the right testing,
+
+it's applying the right
+security scanning,
+
+image scanning,
+vulnerability scanning.
+
+So, there's a lot of privilege
+
+that you're actually applying
+to this build pipeline.
+
+So of course you want to
+be very careful about
+
+the accolades that you applied
+to the build pipeline and in
+
+fact a best practices to
+ensure that everything
+
+has to be checked in in
+
+order to be pushed through
+the build pipeline.
+
+This ensures that things
+like code review and unit
+
+testing which are part of
+what it means to merge
+
+code are always applied
+to the things that you
+
+build and push into the registry
+and deploy into your cluster.
+
+Likewise, inside of
+that build pipeline,
+
+it's really great to have a bunch
+of different compliance pieces.
+
+This includes things
+like vulnerability
+
+scanning for libraries that
+may have vulnerabilities,
+
+credential scanning for users who
+have placed database passwords,
+
+certificates or other privileged
+information into the code,
+
+as well as things like
+integration testing
+
+that ensure that you have
+
+a reliable application you're
+deploying out into your cluster.
+
+So ultimately, I hope this
+gives you a good picture
+
+about how you can put together
+
+users up here via
+code review submitting
+
+code with no other
+permissions building,
+
+pushing images through
+a pipeline all the way out
+
+to deploying your application to
+a production Kubernetes cluster.
+
+[MUSIC].
+

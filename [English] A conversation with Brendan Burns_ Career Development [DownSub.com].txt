@@ -1,0 +1,508 @@
+[MUSIC].
+
+>> First it's a lot sort of lost
+in the midst of time to a degree.
+
+I had a woman who took care
+of me when I was a kid,
+
+who had a Commodore 64,
+
+and it has BASIC.
+
+When you boot up a Commodore 64,
+
+it's got BASIC built into it.
+
+So some of the first
+code that I wrote was
+
+BASIC on the Commodore 64.
+
+Probably much like screen
+time with kids today,
+
+like this was the way
+that this person got me
+
+to quit bugging them to read stories
+to me or something like that.
+
+So that's the very first
+code that I remember.
+
+But I didn't do a lot of
+coding until high school,
+
+where I tried to teach myself how to
+
+code fairly unsuccessfully honestly.
+
+Then when I got to college,
+
+you get the course book and I
+looked through the course book,
+
+and not the only things,
+
+but more than that core
+set of courses that were
+
+really interesting to me were these
+computer programming courses.
+
+So I guess that would
+be the moment when
+
+I thought about becoming a developer.
+
+I think I didn't really know
+actually for a freshmen,
+
+what do you know about careers.
+
+But then when I was a senior
+obviously looking for jobs,
+
+it was obvious that this
+was a good fit for me,
+
+and the industry was growing.
+
+It was the late '90s and the
+industry was growing a lot.
+
+So that was good opportunity.
+
+I started at GTE labs.
+
+So GTE was a telephone company.
+
+It's now part of Verizon I think.
+
+I was in their labs,
+
+which is the old telephony
+labs sort of like AT&T labs,
+
+and they have a storied
+history in computer science.
+
+But it was on the
+down swing in Boston.
+
+I did that for a year,
+
+and then I went to a company
+called Thompson Financial,
+
+which is part of Thompson Reuters,
+
+the big financial information
+
+and just information
+in general company.
+
+I worked on search engine,
+therefore, financial documents.
+
+Then I got bored
+honestly with Web apps,
+
+and so I went back
+to graduate school,
+
+and I spent six years
+getting a PhD in robotics.
+
+So I did humanoid motion planning.
+
+So how do you move arms
+that look like human arms?
+
+I did that mostly
+because I wanted to be
+
+a professor I thought
+I wanted to teach.
+
+I did want to teach and I
+then I was a professor for
+
+a couple of years at a small school
+
+called Union College in Schenectady,
+
+New York and enjoyed it.
+
+It was really a lot of fun.
+
+But I was ready to
+move back to Seattle,
+
+and when your professor,
+
+you don't really get to
+choose where you live.
+
+So I came back to Seattle and I took
+
+a job at Google
+working on web search.
+
+I spent four years
+working on web's core,
+
+web search, web search
+infrastructure.
+
+The summary was, if you did a search
+
+and you got a result that was
+under about 12 hours old.
+
+It's coming out of infrastructure
+
+that the teams that I was on built,
+
+which is a lot of fun,
+taught me a lot about scale,
+
+taught me a lot about impact,
+
+gave me that taste for
+like what it's like to
+
+write software that lots
+and lots of people use.
+
+Then there was a big reshuffling of
+
+people and my team ended
+up moving to Cloud,
+
+and there was like a time machine.
+
+I stepped out of doing
+development when I went into
+
+graduate school because I was
+
+focused on robotics
+and embedded systems,
+
+and step back in 10-15 years later
+
+and looking at how people
+were developing code,
+
+it seemed like there
+must be a better way,
+
+and that really inspired us
+
+to do the community's
+open source project,
+
+especially as Docker,
+do the hockey stick,
+
+and then obviously
+transitioned to Microsoft.
+
+A lot of the reason for that is I see
+
+the next generation being
+the developer productivity.
+
+How do we make it easier to
+build distributed systems?
+
+There is this incredible
+DNA in this place around
+
+developers and developer
+productivity. That's the career.
+
+I mean, I think Kubernetes is
+
+the longest I've ever done
+anything at about seven years.
+
+So it's cool.
+
+The number one advice
+I tell everybody,
+
+especially when they're starting out,
+
+is focus on learning.
+
+That's people say,
+should I switch jobs?
+
+Should I switch companies?
+
+Enrolls, and I say like,
+
+"Well, are you enjoying yourself
+and are you still learning?"
+
+Because obviously we
+want to be happy.
+
+So you should be enjoying yourself.
+
+But learning is a really great sign
+
+of whether you're in
+the right place or not.
+
+If you're still feeling challenged,
+
+if you're still feeling
+learning, it doesn't
+
+matter if you're in the
+same place for 20 years.
+
+As long as it changes,
+
+as long as you continue
+to develop and learn.
+
+But on the flip side,
+
+if you've been someplace
+for two years and you
+
+feel like everything
+there is to know,
+
+it's probably a good sign
+you need some change.
+
+So I would really focus on,
+
+and I think learning how to
+learn and being comfortable
+
+with being uncomfortable or being
+comfortable with not knowing,
+
+being comfortable with
+that process of going
+
+from knowing nothing to knowing
+
+a little bit to then
+really knowing nothing
+
+again to having some
+degree of mastery.
+
+If you practice that a lot,
+
+it becomes a lot less scary.
+It becomes a lot easier.
+
+You like, "This is the
+part where I feel lost and
+
+hopeless," and you know
+that in two weeks,
+
+you'll feel really good
+and it carries with you.
+
+If you don't do that very often,
+
+you forget what it was like.
+
+I think we forget what
+I was like to learn.
+
+So that's the advice
+that I would give
+
+to people just starting
+out, try lots of things.
+
+I think early starting out,
+
+I got really lucky and I had
+some really good mentors.
+
+So I got a lot of advice
+about how to build software.
+
+I don't think that
+
+I stepped into the
+open source community
+
+quite as early as I could,
+
+and I think that might have
+been a little bit more.
+
+I've had a really good time and I've
+
+really enjoyed my career in general,
+
+but I think maybe there was
+some opportunities there,
+
+but I found my way in anyway.
+
+So I don't know. I
+think I've been lucky.
+
+One of the biggest
+lessons that I learned
+
+was to know when it's time to stop.
+
+I've had projects where,
+
+and I've seen other people's projects
+
+where they got so attached
+to it because they'd put
+
+so much time into that when
+it was time to move on,
+
+it was really hard for them to do it.
+
+They stuck with it and
+it became way more
+
+painful than it needed to be to move
+
+on because they stuck
+with it way past
+
+the time when everybody else
+realized that it was done.
+
+I think that's an important lesson.
+
+You can't be attached. You
+can't get too attached.
+
+I told someone the other day,
+
+the inevitable trajectory
+of all software is death.
+
+Like every piece of software
+
+that you write is eventually
+going to be deleted.
+
+Even Kubernetes is eventually
+going to be deleted.
+
+So accepting that and
+being comfortable with
+
+that is really important
+because otherwise,
+
+you make bad decisions.
+
+You make decisions that you
+may have to do with attachment
+
+rather than where the world is at.
+
+I think the other
+thing that I learned
+
+was the importance of community
+and working together.
+
+That's been a huge thing.
+
+I was a little bit more of a solo
+person earlier in my career,
+
+and I think that's been
+something that I've learned
+
+a lot of is, how to delegate,
+
+how to let go,
+
+how to let other people do the work,
+
+and realize when it's time for you
+
+to move on and to let
+other people do the work.
+
+The goals for my for myself,
+
+they actually tend to
+span more than one year.
+
+I mean obviously, of near term goals.
+
+I want to make sure
+my teams are happy,
+
+I want to make sure my products
+
+keep growing, and things like that.
+
+I think the biggest thing for me is
+
+when I look at the systems that
+people are struggling to build,
+
+when I look at the
+things that people are
+
+building on Azure or anywhere else,
+
+it's just too hard.
+
+I feel like we're still people
+are banging rocks together,
+
+and I feel bad, I feel responsible.
+
+I feel like we need to do a
+better job building tools
+
+for them so that they can
+
+focus on their business and
+they're on their product.
+
+I love what's going on with
+no code, low code stuff.
+
+But I think we need to
+figure out how we bridge it.
+
+How do we take it from no
+code all the way through
+
+to really advanced code
+in a seamless way.
+
+Right now, it's these
+siloed experiences.
+
+So my goals, obviously
+I guess for this year,
+
+but for the years to come,
+
+have a lot to do with improving
+
+developer experience for
+distributed systems.
+

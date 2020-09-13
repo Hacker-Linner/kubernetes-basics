@@ -1,0 +1,416 @@
+[MUSIC]
+
+>> Hi. I'm Brendan and I'm going
+to talk to you today about
+
+serverless Kubernetes and running
+serverless on Kubernetes.
+
+I think in any discussion of
+serverless and really honestly
+
+containers and many other words
+in the technological sphere,
+
+the words themselves have
+taken on a larger meaning
+
+than necessarily is
+particularly descriptive.
+
+So, it's first really valuable to
+
+talk about what we mean
+when we say serverless.
+
+I think actually there are
+
+two distinct meanings for
+serverless in cloud today.
+
+One is actually that
+there are no servers.
+
+Obviously, server has disappeared,
+
+your code is running
+in the cloud somehow.
+
+But the server itself
+is invisible to you.
+
+Now, clearly, it doesn't
+simply run on vapor.
+
+There is a server there somewhere but
+
+the cloud abstraction has
+chosen to hide it from you.
+
+I think that the other definition
+for serverless that we see
+
+is the notion of functions
+as a service or FaaS.
+
+This is really a programming model
+where I say I have a function,
+
+it's defined in the cloud somewhere,
+
+and I have an event-driven way of
+
+calling that function
+and having it execute
+
+possibly in response
+to an HTTP request,
+
+or in response to a git push,
+
+or any other kind of event
+that might occur in the cloud.
+
+I think these are
+two very distinct things.
+
+One is all about hiding
+operations from you and
+
+reducing the complexity
+of what you as
+
+an application developer need
+to think about and manage,
+
+and the other is really
+a programming model
+
+and a way of constructing
+applications
+
+that in some ways
+makes it easier and in
+
+some ways makes it
+more complicated for
+
+you to develop an application.
+
+I think the way in which
+these two concepts interact with
+
+Kubernetes has to do with
+those two different ideas.
+
+So, previously, I had discussed how
+
+the Kubernetes API is really
+
+intended to hide
+the machines from you.
+
+So, if you have servers
+here, VMs here,
+
+when we're talking about
+serverless Kubernetes
+
+or nodeless Kubernetes
+since these here,
+
+I can draw it. These are
+the nodes Kubernetes.
+
+How can I create a
+nodeless Kubernetes?
+
+So, how can I create a world where
+
+these machines have ceased to exist?
+
+The first precursor for doing
+this is something where you
+
+can provide containers as
+
+a service or serverless
+containers in the cloud.
+
+So, if you look at something
+like Azure Container instances,
+
+I can go to Azure Container
+instances and I can say,
+
+"Hey, here's my container.
+
+Please run it." Of course,
+
+that container executes in a server
+
+somewhere in a server in
+an Azure data center,
+
+but you don't actually
+see that server.
+
+We manage it for you,
+
+we ensure that it's secure,
+
+or we ensured that it is up to date.
+
+From a user perspective,
+
+what you see and what you pay for is
+
+this serverless container that
+
+is running on Azure's infrastructure.
+
+We're really seeing
+this idea take off.
+
+In fact, it's being replicated in
+
+many other public clouds or
+
+even with for some people
+in an on-premise setting.
+
+Now the question then is,
+
+how do I take this
+serverless container infrastructure
+
+and marry it up to
+the Kubernetes API?
+
+The way that we've done
+this actually is through
+
+this thing called
+the Virtual Kubelet project.
+
+So, the Virtual Kubelet is
+an open source project.
+
+It's up on GitHub.
+
+It's actually going
+into the CNCF Sandbox.
+
+It's worked on by Microsoft,
+
+by Amazon, by VMware,
+
+by a bunch of other providers who are
+
+interested in this notion of how do I
+
+bridge serverless containers
+in Kubernetes.
+
+What it does is it actually
+creates a virtual node.
+
+That's the Virtual Kubelet part.
+
+That's because Kubernetes
+as it currently is
+
+implemented really needs
+to have nodes there.
+
+So, the Kubernetes' API itself
+separates you from the machines,
+
+but the manner in which
+the Kubernetes API is implemented
+
+really is attached to the idea
+of there being nodes.
+
+So, the virtual Kubelet
+provides this virtual node that
+
+the Kubernetes API
+knows about and that is
+
+bound to the serverless
+container infrastructure.
+
+So, when you come along and you say,
+
+"I would like to run a pod
+on top of the Kubernetes
+
+API," that pod is ultimately
+scheduled onto this virtual node.
+
+The Virtual Kubelet then is
+responsible for saying, “Oh, okay.
+
+Hey, Azure Container Instances,
+
+would you please run
+this container for the end-user."
+
+It's now smiling because they
+
+have a running version
+of their container.
+
+Of course, it's also responsible
+for doing things like
+
+if I say kube control logs,
+
+routing the logs request through
+
+the virtual node down to
+the container that's running in
+
+the infrastructure so that logging
+
+information comes
+back to the end user.
+
+So, really when we're
+talking about delivering
+
+serverless and nodeless Kubernetes,
+
+it's really about adapting
+the implementation of
+
+the Kubernetes API
+to take advantage of
+
+serverless container
+infrastructure that
+
+clouds are building and
+providing to their users.
+
+Now when we're talking about
+running serverless on Kubernetes,
+
+it's all about taking the
+Kubernetes API and transforming it
+
+into something that supplies
+the serverless programming model.
+
+So, we have here the Kubernetes API,
+
+which in all honesty is not
+
+a particularly great
+developer experience.
+
+It's good for building
+infrastructure,
+
+not really great for
+beginners who want
+
+to quickly and easily
+deploy functions.
+
+So on top of that,
+
+people are building implementation
+
+of functions as a service
+that is based on Kubernetes.
+
+So, when you and this supplies
+
+a new API that users
+can interact with.
+
+So, when a user comes in and says,
+
+"Hey, functions as a service,
+
+here's my function," this functions
+
+as a service is responsible
+then for packaging
+
+that up as a container
+with your function inside,
+
+and then scheduling that container
+using the Kubernetes API,
+
+and how that container
+actually executes is
+
+probably then down on one of
+
+these nodes that is being managed by
+
+the Kubernetes API or
+it could possibly even
+
+be a virtual node supplied
+by the Virtual Kubelet.
+
+The great thing about using
+
+this functions as a service
+implemented on top of Kubernetes is,
+
+of course, you don't
+have to be limited
+
+to the functions as
+a service environment.
+
+If you want to run
+other applications by themselves,
+
+you can still have
+your functions as a service,
+
+make a call out to
+those other applications,
+
+service load balancers,
+
+all of the other orchestration
+infrastructure in
+
+Kubernetes is still available
+to your applications.
+
+You've merely taken the programming
+model and the event streams.
+
+So, the events are also
+triggering your functions as
+
+a service and you've made
+that programming model
+
+available to end users who are
+using your Kubernetes cluster.
+
+I hope that's given an illustration
+of both how we can deliver
+
+serverless Kubernetes on top of
+serverless container technology,
+
+as well as how you build and deploy
+
+the serverless programming model on
+
+top of any Kubernetes
+cluster. Thanks.
+
+[MUSIC]
+

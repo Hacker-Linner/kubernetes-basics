@@ -1,0 +1,385 @@
+[MUSIC]
+
+>> Hi. I'm Brendan. Today,
+we're going to talk about
+
+Monitoring and Alerting
+in Kubernetes.
+
+So Kubernetes itself
+actually comes with
+
+a large number of metrics
+available to you out-of-the-box,
+
+and that's great because it
+means you don't have to set up
+
+monitoring for your ports, for CPU,
+
+or memory, or network usage, or disk,
+
+all of these things are automatically
+taken from the containers
+
+that are running on
+the machines pushed
+
+into the Kubernetes metrics server.
+
+From there, they can
+get pushed out to
+
+Cloud-based monitoring
+like Azure Monitor,
+
+or to an open-source monitoring
+solution like Prometheus.
+
+So just by deploying your
+container into Kubernetes,
+
+you get access to a bunch of
+
+monitoring information
+that can be pretty
+
+useful for debugging what's going on.
+
+But really for most applications,
+
+it's important to take
+it a step further.
+
+Now, one way you can take it a step
+
+further is by adding a service mesh.
+
+If you add a service mesh, well,
+
+then you're going to get
+things like HTTP latency,
+
+you're going to get an error codes.
+
+Again, these can be pushed into
+
+Cloud-based monitoring
+solution or into Prometheus.
+
+But really, in order to actually
+
+build good monitoring
+for your application,
+
+you're probably also going to need to
+
+add some things in code itself.
+
+Now in this world, Prometheus
+is a great solution.
+
+Prometheus is actually becoming
+
+the standard way of exposing
+metrics to the world.
+
+It's easy to integrate
+Prometheus metrics
+
+obviously with Prometheus itself,
+
+but also with Cloud-based
+solutions like Azure Monitoring.
+
+Now when you're using Prometheus,
+
+usually what you're going to do is,
+
+you're going to import
+
+the Prometheus libraries and
+then you're going to create
+
+a new metric that says,
+
+"How long did I spend processing
+a particular batch job?"
+
+So I'll say, new metric batch.
+
+When you do this, that's going
+to expose a web interface so
+
+that Prometheus can come along
+and scrape that web interface,
+
+get the data that's
+custom to your solution,
+
+push it up into the monitoring
+solution of your choice.
+
+So that's great, and that
+enables you to expose
+
+whatever arbitrary metrics make
+sense for your application.
+
+Once you've done that,
+
+you hopefully have all of the metrics
+
+that you need in order
+to do good alerting.
+
+There is actually a
+really big difference
+
+between the information you push
+
+out in terms of monitoring and
+
+the information that you push
+out in terms of alerting.
+
+Because, of course,
+monitoring information is
+
+information that you take
+effectively on-demand.
+
+So the only thing you
+really need to worry
+
+about with monitoring information is,
+
+do I have enough space?
+
+With a Cloud-based solution,
+
+that's not even really a problem.
+
+Whereas with alerting,
+if you fire an alert,
+
+that wake somebody up,
+
+that sends a page,
+
+that sends an e-mail,
+
+and so you can't have too much
+
+alerting or else it
+just generates noise.
+
+If you generate noise,
+
+then it's very difficult
+for your on-calls,
+
+your DRIs to know what they
+should pay attention to.
+
+So the most important
+thing to think about
+
+when you're thinking
+about alerting is,
+
+we want to eliminate noise.
+We can't have noise.
+
+Every single alert that fires
+that you don't take an action on,
+
+that's a problem and it's a
+problem that should be fixed.
+
+So in particular,
+
+when we're thinking about
+alerting in Kubernetes,
+
+you want to be alerting on
+what you care about which is,
+
+what's your customer experience?
+
+How is your customer
+experiencing your product?
+
+Usually, that's
+something like latency,
+
+and you're going to set some goal.
+
+You're going to set an SLO
+
+or a service-level
+objective that says, "Hey,
+
+I think that at the 99th percentile,
+
+my latency should be less
+than 500 milliseconds."
+
+Now if you haven't seen notation
+like the 99th percentile before,
+
+that's talking about a distribution.
+
+So if you have a distribution
+
+of latencies that your
+service provides for
+
+all of the requests at the 99th,
+
+that's going to be the value
+
+that you're going to
+be thinking about.
+
+The reason that's important
+is because while measuring
+
+the average or the 50th
+percentile in the middle,
+
+is interesting, it can actually
+mask a lot of really bad problems.
+
+Because if you're okay
+at the average but
+
+you're really slow one
+out of every 100 times,
+
+you're still providing one customer
+
+with a really bad
+customer experience,
+
+and over time, effectively
+the law of numbers
+
+says that every customer is going
+to have that bad experience.
+
+So we focus both on the
+average, but more importantly,
+
+on the 99th percentile in order to
+
+really understand how our
+service is performing at scale.
+
+So when you're
+identifying those alerts,
+
+think about the experience
+you want to deliver to
+
+your customer and then set
+alerts based on that experience.
+
+So if the 99th percentile
+latency coming out
+
+of your service mesh ever
+exceeds 500 milliseconds,
+
+that's a good opportunity
+to fire a page off to,
+
+that's my best drawing of
+a cell phone going off,
+
+your DRIs cell phone
+so that they can then
+
+go into the monitoring system
+and figure out what's wrong.
+
+That leads to the final
+part of monitoring and
+
+alerting in Kubernetes,
+which is visualization.
+
+You need to take all of
+those metrics and put it
+
+into a great visualization
+tool and Grafana,
+
+for example, is a really
+fantastic visualization tool,
+
+that again, you can
+use with Prometheus,
+
+you can use with Azure monitoring.
+
+That enables you to put all
+of those metrics together
+
+into whatever form of monitoring
+makes the most sense,
+
+maybe it's a dial or a graph,
+
+and that allows you to
+actually understand your data.
+
+So it's not sufficient just to
+monitor the data, just to alert,
+
+is actually very important that
+you think about how do I put
+
+all those things together so that
+my on-calls can gain insights,
+
+and then eventually, put
+them together into tools.
+
+So you're going to write
+command line tools that
+
+actually can automatically fix
+
+the problem for you,
+identify common causes,
+
+take action, and
+eventually build robotics,
+
+build agents that can call
+these tools for you and you
+
+never have to actually
+wake up a human
+
+in order to fix your application.
+
+So that gives you a perspective about
+
+how you can start with
+the default metrics,
+
+add your own custom metrics,
+
+add alerting based on
+customer experience,
+
+add visualization and
+tools for mitigation
+
+to really deliver a reliable
+application on Kubernetes.
+
+[MUSIC].
+

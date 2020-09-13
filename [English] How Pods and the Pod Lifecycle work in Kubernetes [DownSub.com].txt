@@ -1,0 +1,432 @@
+>> Hi, I'm Brendan. Today
+we're going to talk
+
+about Pods and Pod lifecycle.
+
+So just as a quick refresher,
+
+in Kubernetes, a pod is the
+atomic unit of scheduling.
+
+It can contain one
+or more containers.
+
+It might be something like a
+web server and a side car.
+
+We're not really going
+to talk too much
+
+more about the containers themselves,
+
+but what we are going
+to talk about is
+
+what happens when
+you create that pod.
+
+How does the lifecycle of
+it work within Kubernetes?
+
+Well, the very first thing
+that happens when you create
+
+that pod is it goes into
+a state called pending.
+
+Now, what pending means is that
+
+the Kubernetes API has
+accepted your pod.
+
+It's ready to go, but it hasn't
+
+actually been scheduled
+onto a machine.
+
+You may have a number of
+different VMs that are running,
+
+that could have that pod.
+
+There's the scheduler,
+
+which is responsible for looking
+at the various resources,
+
+maybe one CPU and two gigs
+of memory and finding
+
+a home for that pod on
+a particular machine.
+
+So once that's happened,
+
+once the scheduler has said, hey,
+
+this pod is running on
+say that this is node 3.
+
+Once it says the pod
+is running on node 3,
+
+it transitions out of
+
+the pending state and
+into the creating state.
+
+Now, what's going on
+with the creating state?
+
+Well, the first thing
+that's happening
+
+is obviously the image
+needs to be pulled.
+
+Now, the image is in some
+Cloud-based repository.
+
+Maybe it's in the Azure
+Container Registry.
+
+So what's happening is the
+node itself is going out to
+
+the Azure Container Registry and
+
+pulling the image down to the node.
+
+Now, actually Kubernetes
+has a preference for
+
+scheduling containers onto nodes
+
+where the image is already present.
+
+So it's possible that if
+
+the image is already
+present on this node,
+
+this pull step will
+be skipped because it
+
+obviously doesn't need to happen
+if the image is already there.
+
+All right, so once the container
+image has been pulled,
+
+the container transitions
+into the running state.
+
+Once the container is
+in the running state,
+
+your program is up and running,
+
+everything is operating happily.
+
+But of course, bad things can
+
+happen and your
+container could crash.
+
+So we have a process running
+inside this container.
+
+If it happens to crash,
+
+Kubernetes is going to restart it.
+
+So when it restarts,
+
+if it restarts too many times,
+
+your pod can go into a state
+that's called CrashLoopBackOff.
+
+What this effectively means is, hey,
+
+I've seen your container
+crash too many times,
+
+rather than fruitlessly restarting
+
+it over and over and over again,
+
+which takes a bunch of
+resources and takes CPU for
+
+the Kubelet could be using
+for maintaining other pods.
+
+It's actually going to back off.
+
+It's going to actually say, "Hey,
+
+I used to try and
+restart it immediately,
+
+now maybe I'm going
+to wait 10 seconds.
+
+If that fails, maybe I'll wait 20
+
+seconds," and so on and so forth.
+
+So you'll see all of
+these things when you say
+
+kube control get pods.
+
+You'll see this state pending
+running CrashLoopBackOff.
+
+If you see CrashLoopBackOff,
+
+that means something
+very bad is wrong.
+
+Generally speaking, you'll
+want to look at the logs
+
+or other things to figure out
+why your container is crashing.
+
+You may actually need to fix things
+
+in order to get back
+to a running state.
+
+Now, sometimes this happens
+
+because the database
+isn't available and it's
+
+a transient problem and eventually
+you get back to healed.
+
+But usually, it means
+there's something that you
+
+need to get involved with.
+
+Now, there's a few other kinds
+
+of error conditions that can happen.
+
+Sometimes you'll see things
+gets stuck in pending.
+
+If it gets stuck in pending,
+
+that usually means
+there's no resources.
+
+All of these VMs are full.
+
+There are no resources
+available for your pod to run.
+
+The only way to fix that
+is either to delete
+
+some other pods from
+
+your cluster or to actually scale
+up the size of your cluster.
+
+So if you see things staying in
+pending for a really long time,
+
+you're going to need to
+resize your cluster,
+
+or turn on auto-scaling,
+or delete workload,
+
+or simply wait and maybe
+something will stop
+
+running if it's a batch job
+or something like that.
+
+Now, another thing
+that can happen is you
+
+could actually give a bad image.
+
+So when the VM goes
+to pull, it can say,
+
+"Hey, I don't know there's a
+404 with pulling the image.
+
+I don't know what that image is."
+
+When that happens, you're
+going to get stuck in
+
+the creating state and you're
+
+never going to transition to running.
+
+Again, if you do a kube control,
+
+get pods you may not see this,
+
+but if you do a kube
+control describe,
+
+you'll get all of the
+events associated.
+
+So you'll see the events that are
+
+associated with this particular pod.
+
+In there, you'll see
+something like tried
+
+to pull image, failed to pull image.
+
+Sometimes this happens if
+you're not authorized.
+
+Sometimes it happens if you
+have a typo in the image name.
+
+Kubernetes itself doesn't check
+with the repository ahead of time
+
+before it schedules the container
+
+to make sure that the
+image is available.
+
+So if you see things that
+are stuck in creating,
+
+it's usually because
+there's some degree of
+
+problem with the image itself.
+
+There's also some more advanced
+parts of the pod lifecycle.
+
+In particular, the most
+common thing that people
+
+do is you can start
+hanging health events.
+
+So you can say, health or ready
+lifecycle events off the pod.
+
+When you attach these
+URLs to the pod,
+
+what happens is the Kubelet
+is going to actually use
+
+these URLs to test to see
+if your pod is healthy.
+
+If it's not healthy, if it returns
+something that's not a 200,
+
+it's going to restart your pod,
+
+just like it crashed,
+
+and it can cause CrashLoopBackOff
+if it happens too many times.
+
+If it checks the readiness,
+
+it's going to determine whether it
+
+is added to a load balance or not.
+
+There's also a couple of lifecycle
+hooks that the pod itself
+
+calls to help you integrate
+with other things.
+
+The first one is post start.
+
+That's a webhook that
+you can register.
+
+That webhook is called immediately
+after your containers starts.
+
+Then there is pre-stop,
+
+which is called immediately
+before your container terminates.
+
+So if you want to take some
+action after you started running,
+
+you can register a post start hook.
+
+If you want to take some action just
+
+before your container is terminated,
+
+you can register a pre-stop hook.
+
+The other piece of
+integration with lifecycle
+
+is you can actually in your
+pod define an init container.
+
+This is a separate container image.
+
+What its job is to do is to provide
+
+some degree of initialization before
+
+the rest of the containers
+in your pod startup.
+
+So if you specify an init container,
+
+that container will run
+to completion first.
+
+It returns as 0, for example.
+
+Then all of the other containers
+
+inside of your pod
+will get started up.
+
+This is a good way to do things
+like a schema migration or
+
+any other kind of downloading
+files out of some storage account,
+
+any other kind of
+initialization that you need to
+
+do prior to the starting of your pod.
+
+I hope that gives you
+an illustration of
+
+the general pod lifecycle
+and how you can
+
+integrate your container
+with Kubernetes and pods.
+
+Thanks [MUSIC].
+

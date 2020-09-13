@@ -1,0 +1,336 @@
+[MUSIC]
+
+>> Hey, I'm Brendan, and today,
+we're going to talk about
+
+how deployments in Kubernetes work,
+
+specifically how you can
+use deployments to do
+
+reliable zero downtime upgrades
+
+of your software running inside
+of a Kubernetes cluster.
+
+Well, let's suppose you
+have a simple application.
+
+It's got three replicas.
+
+They're controlled by a deployment.
+
+So, this is a pod.
+
+This is a pod.
+
+This is a pod.
+
+You've got a deployment here and
+
+a load balancer
+provided by a service.
+
+Obviously, the load balancer is
+
+bringing traffic to
+each of these pods.
+
+In the deployment,
+you're using image v1.
+
+You're using v1 of your container
+image to run that application.
+
+So, you've got a v1 here,
+
+a v1 here, a v1 here.
+
+Now, when you change that deployment,
+
+when you push a new image
+to the deployment object,
+
+it's going to trigger off a rollout.
+
+The deployment itself
+is going to take
+
+responsibility for rolling
+out your application.
+
+So, you might come along and
+you might say, you know what,
+
+I want to change this to image v2.
+
+Now, that doesn't happen immediately.
+
+It's not as if the instant you
+
+change the deployment from v1 to v2,
+
+all of your containers immediately
+
+are moved from
+one version to the next.
+
+The reason for this is obvious.
+
+First of all, if we did that,
+
+we would take down every replica of
+
+your service and it would
+be briefly unavailable.
+
+Second of all, you
+might have flaws in v2.
+
+You don't want to suddenly
+move from v1 to v2
+
+if v2 is suddenly going to start
+crashing all the time, right?
+
+So, we need to do a gradual rollout
+from one version to the
+
+next while maintaining
+access for all of the users.
+
+To achieve this, Kubernetes has
+
+a couple of concepts that
+are associated with the pod.
+
+The first concept is this
+something called a liveness check,
+
+and the second is a readiness check.
+
+Together, these things define what
+it means to be a healthy pod.
+
+Liveness defines whether or not
+
+a pod should be
+automatically restarted.
+
+Say, your application is deadlocked.
+
+Readiness determines whether or
+
+not your application
+is ready to serve.
+
+So, we change our version
+from v1 to v2.
+
+In its most basic setting,
+
+what the deployment now
+will do is it will actually
+
+create a fourth replica
+of your application,
+
+and this one is v2.
+
+Now, assuming that the container
+
+comes up and it passes
+its liveness check,
+
+the system will continue to keep
+that container up and running,
+
+but it hasn't yet added it
+into the load balancer.
+
+Only when the readiness check, so
+our liveness check is checked.
+
+Only when the readiness check passes,
+
+does now traffic be brought
+
+down from the load balancer
+to this new container.
+
+Now, at this point,
+the deployment sees,
+
+okay, liveness check has passed,
+
+readiness check has passed,
+
+container is up and serving traffic,
+
+now, I'm going to actually delete
+one of my old applications.
+
+So, I'm going to actually come
+
+along and I'm going to
+delete this container.
+
+But wait, I hear you say.
+
+I had user traffic that
+was being executed by
+
+that application in the instant
+when you tried to delete it.
+
+How can you possibly do
+zero downtime upgrades
+
+if the user traffic was interrupted?
+
+Well, it turns out the pod also
+
+has something called a
+termination grace period.
+
+What the termination grace period
+determines is how long
+
+this container stays up and
+running after it's started,
+
+it's been deleted, it's been
+
+requested until it is
+actually terminated?
+
+By default, this is 30 seconds.
+
+So, what happens then is when
+
+the deployment makes
+the decision to delete this pod,
+
+it is moved into
+the terminating state,
+
+the connection to
+the load balancer is severed,
+
+but the container itself is still
+up and running for 30 seconds.
+
+That means any user requests
+that are being processed
+
+while the container is terminating
+successfully are processed,
+
+but new requests no longer come
+
+down to this container because
+
+the connection to the load
+balancer has been severed.
+
+After 30 seconds or
+
+accustomed termination
+grace period has passed,
+
+this container is actually fully
+
+deleted and is really, really gone.
+
+At this point, the deployment moves
+on and it creates another pod.
+
+The same process happens again.
+
+Liveness check hopefully passes.
+
+Once the readiness check passes,
+
+traffic is brought down to
+
+this new container that
+is a v2 container.
+
+Again, this container is terminated
+
+first by severing
+the load balancer connection.
+
+Then, after the
+termination grace period
+
+by actually deleting the container.
+
+Once that has happened successfully,
+
+a third pod is created with v2.
+
+It passes its liveness check.
+
+It passes its readiness check.
+
+Traffic comes down. At this point,
+
+connection is severed and
+this container has been deleted.
+
+Now, we've done an upgrade from
+v1 of our application to v2 of
+
+our application without
+any user traffic
+
+being affected by the rollout.
+
+Now, actually, the deployment is
+
+significantly more
+configurable than that.
+
+In this particular example,
+
+we moved one container at a time
+
+that is configurable if you want
+to do a deployment more quickly.
+
+In this deployment, we didn't wait
+
+any period of time after the
+container became ready before
+
+moving on to the next pod that
+
+the length of time to wait in between
+
+containers is also configurable.
+
+Likewise, we always added
+an extra container.
+
+So, we always went from
+three to four instead
+
+of subtracting a container
+and moving from three to two.
+
+That is likewise also configurable
+inside of the deployment.
+
+But I hope this gives you
+
+an idea of how deployments
+work and how you can use
+
+them in your Kubernetes cluster to do
+
+zero downtime upgrades
+of your applications.
+
+[MUSIC]
+

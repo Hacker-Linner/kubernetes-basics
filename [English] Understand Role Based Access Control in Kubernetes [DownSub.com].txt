@@ -1,0 +1,340 @@
+[MUSIC]
+
+>> Hi, I'm Brendan Burns from
+
+Microsoft Azure and I'm going to talk
+
+about Role Based
+Access Control in Kubernetes.
+
+Let's see about why you're
+interested in access control.
+
+Well, obviously, you
+have multiple people on
+
+your teams and they're accessing
+your Kubernetes cluster.
+
+But each of these people may need
+
+to have some amount of
+security from one another.
+
+At the simplest level,
+you simply don't want
+
+this person interfering with
+the other person accidentally.
+
+For example, one developer
+might accidentally delete
+
+someone else's work or gain
+
+visibility into a project
+
+that's being developed
+that maybe secret.
+
+There's a wide variety
+of reasons why you
+
+want to slice apart your Kubernetes
+
+into a place where user one can
+
+see and a place for user two can see,
+
+and have them not be able to
+see into each other's work.
+
+When you think about
+the differences between
+
+developers and operators,
+cluster administrators,
+
+it becomes even more clear
+
+that there are different
+capabilities that need to be
+
+associated with different types of
+
+roles within that Kubernetes cluster,
+
+and that's where the notion of RBAC
+
+or role-based access
+
+control comes into play.
+
+RBAC in Kubernetes
+is the way that you
+
+restrict who can access
+what within the cluster.
+
+So in order to understand how
+RBAC works in Kubernetes,
+
+it's important to understand
+
+how role-based access
+control works in general.
+
+The role in role-based
+access control defines
+
+a notion of a verb something
+like get or a list,
+
+and a set of nouns,
+
+something like pods, volumes, etc.
+
+So a role defines what you
+can do to a set of resources.
+
+This is a resource within Kubernetes
+just like everything else.
+
+So this is a restful resource
+
+and there's a number of
+them that are predefined,
+
+and you can also create them
+yourself using a YAML file.
+
+So you can represent
+any arbitrary set of
+
+privileges onto the resources
+within the Kubernetes cluster.
+
+But by itself, the role doesn't
+actually grant any permissions,
+
+because we haven't associated
+
+this role with anyone who
+might make API calls,
+
+and so that's where a
+binding comes into play.
+
+So you can create a role
+
+binding which is basically
+a mapping between a person,
+
+let's say me, and a particular role,
+
+let's say cluster admin.
+
+So the role binding takes these
+two pieces together and therefore,
+
+I have the privileges
+defined in this role.
+
+Now, I can have multiple roles.
+
+I might get edit as well
+
+or any number or custom role
+that's been designed.
+
+I can have access to
+any number of roles,
+
+and you can also use groups.
+
+Oftentimes, actually, this
+is a much better way to
+
+manage things if you define a group.
+
+For example, the dev team,
+
+you can associate that dev team
+with a particular role.
+
+In that way, anyone who joins
+
+that team or is
+removed from that team
+
+either gains access or loses
+
+access to those
+particular privileges.
+
+Now within Kubernetes, there's
+
+actually two different
+kinds of resources.
+
+There are namespace resources
+and there are non,
+
+there are cluster resources.
+
+An example of a cluster resource
+would be something like
+
+a custom resource definition
+
+that is defined for
+the entire cluster.
+
+An example of a namespace
+resource might be
+
+something like a service or a pod,
+
+they exist within a namespace.
+
+These namespaces also become
+the scopes for resource control.
+
+So you can actually say not only
+
+does somebody have access to pods,
+
+but maybe they only have access to
+
+pods under the namespace "my-team",
+
+so you can limit, and
+then "your-team".
+
+I might have access to pods in
+
+my team but I won't have
+access to pods in your team.
+
+The way that you do
+this is by creating
+
+a role binding within this namespace.
+
+So there's two different types
+
+of role bindings that you can create.
+
+One is the cluster role binding,
+
+and obviously, by its name,
+
+a cluster role binding provides you
+
+with permissions for
+the entire cluster.
+
+It can provide you
+with permissions for
+
+cluster resources and
+it can also provide you
+
+with permissions for resources
+
+within any namespace
+within a cluster.
+
+Obviously, cluster role bindings
+are very powerful,
+
+and you want to be careful
+with how you apply
+
+them because they apply not only to
+
+any existing namespaces but to
+
+any future namespaces that
+you might create as well.
+
+There are also role bindings
+
+and they provide privileges
+
+within the context of
+a particular namespace.
+
+So obviously, a cluster role
+binding is a cluster level object,
+
+a role binding is a namespace object.
+
+So if for example,
+
+I have my "my-team" namespace,
+
+if I create a role binding here,
+
+that is a binding say
+to the edit role.
+
+This provides me with the ability,
+
+if it is a role binding
+between edit and me,
+
+this provides me with access to
+
+editing within the context
+of this namespace,
+
+but not any other namespace.
+
+So the fact that
+the role binding exists
+
+within the context of this namespace,
+
+defines the scope for
+that role binding.
+
+If I instead gave myself a cluster
+role binding at the top level,
+
+it would provide me
+with access to binding,
+
+it would provide me with
+access to the entire cluster.
+
+I definitely encourage
+people to check out all of
+
+the different roles that are
+predefined inside of Kubernetes.
+
+There's a lot of them that can
+give you an idea and you can even
+
+use to build up
+your own access control,
+
+and take a deep look into
+how you want to manage
+
+the different roles inside
+of your cluster so that you
+
+can provide a secure cluster where
+
+two developers or two operators
+can't step on each other's toes,
+
+see each others secrets,
+
+or otherwise, interfere
+with one another.
+
+[MUSIC]
+

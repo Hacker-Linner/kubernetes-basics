@@ -1,0 +1,364 @@
+[MUSIC]
+
+>> Hey, I'm Brendan and
+today we're going to
+
+talk about service mesh.
+
+So when we think about technologies,
+
+containers and container
+orchestration sort of came first.
+
+So one of the things that came
+
+after was the idea of a Service Mesh,
+
+and I want to explain
+to people how it
+
+works and why you might
+consider using it.
+
+So traditionally, when we
+think about Load Balancing,
+
+we think about North-South
+load balancing.
+
+Meaning, I have a user out
+here somewhere and they
+
+put traffic into
+gateway of some story.
+
+This might be an ingress in
+
+Kubernetes and that
+leads down to your pods.
+
+What a service mesh is
+actually talking about is more
+
+like East-West Load balancing.
+
+Which means, I have
+a service here s1,
+
+and I want to talk to
+some other service, S2.
+
+How do I make traffic go
+between those two things?
+
+Now, when you're talking
+about the mesh itself,
+
+there's a couple of different
+values that it brings to the table.
+
+The first is, that many of these
+meshes install as side cards.
+
+So if you imagine you
+have your main pod,
+
+you have your app container and
+then you have a mesh side card,
+
+there is a separate container within
+
+the same pod and they talk
+to each other at local host.
+
+Now what this means is that
+as an application developer,
+
+I don't actually necessarily
+have to link something in,
+
+I don't have to think
+very much about how to
+
+integrate the service
+mesh into my application,
+
+I just add it's container to
+
+my pod definition and the
+services show up automatically.
+
+Because this is all
+happening on local host,
+
+I don't need to worry
+about certificates,
+
+or any other kind of authentication,
+
+because the network traffic is all
+
+limited to the inside of the pod.
+
+So you can let the app developer
+focus on developing their app,
+
+let the service mesh
+take care of sort of
+
+proxying traffic out to
+the rest of the world.
+
+Now, what are the sort of
+main characteristics that
+
+a service mesh provides to you as
+
+an application developer?
+Well, there's three.
+
+The first is a notion of
+
+authorization which basically
+says service authorization.
+
+Which basically says, "Well,
+
+if I'm service one,
+
+can I talk to service two".
+
+On the other side,
+If I'm service one,
+
+can service three talk to me.
+
+So the service mesh can allow
+you to in a declarative way
+
+define the services that are
+allowed to talk to your service,
+
+and the services that your
+services are allowed to talk to.
+
+That's pretty useful in terms of
+establishing least privilege,
+
+and other sorts of access control
+
+in the building of your application.
+
+It's also actually really useful
+in terms of preventing accidents.
+
+Because you can't have
+a development service
+
+accidentally put too much traffic
+onto your production instance.
+
+So if auth is the first thing
+that a service mesh provides,
+
+the second thing that a
+service mesh provides
+
+is the idea of experiments or canary.
+
+So if I'm service one and I'm
+going to talk to service two,
+
+there may be two different
+versions of service two.
+
+Their may be service two
+and there may be service
+
+V2 which is the next version
+
+of the service that
+I'm going to roll out.
+
+Now I might want to do
+an experiment and say,
+
+"I want 99 percent of my traffic
+to go to the production ".
+
+I know it works version
+of service two,
+
+but I want to do a one
+percent experiment
+
+to send traffic to
+this other version.
+
+To test for a while.
+
+Maybe it's to see if
+it works correctly.
+
+Maybe there's a new
+implementation down here,
+
+you want to make sure
+it's still performing.
+
+There's a variety of reasons
+why you might want to
+
+do this sort of Canary testing to
+
+minimize the impact of any change
+
+that you might make before
+you complete a roll out.
+
+The service mesh actually
+enables you to do that.
+
+Because again over
+here in this side car,
+
+it's proxying for you,
+
+and when it's doing that proxy,
+
+it can send 99 percent of the
+traffic in one direction,
+
+and one percent of the
+traffic in the other.
+
+What's important is the application
+
+doesn't even know the difference.
+
+You didn't have to reconfigure
+application at all in order
+
+to achieve this kind
+of experimentation.
+
+The third thing that the service mesh
+
+provides for you is that if you have
+
+your app and you have
+the service mesh,
+
+and it's talking through that proxy,
+
+this proxy can actually
+collect a lot of metrics.
+
+It can collect metrics like
+latency, like HTTP errors,
+
+user agents, and many other
+metrics that are useful to you,
+
+and then push those things into
+
+a metric server like
+Azure Monitoring,
+
+or open source project
+like Prometheus.
+
+So you can actually,
+
+without instrumenting
+your application at all,
+
+you can actually get really
+targeted metrics about.
+
+If you're throwing 500s,
+
+how long is a particular
+request taking,
+
+what kind of clients
+are talking to you?
+
+Again, without modifying
+your code at all and
+
+simply by adding in the
+service mesh side car.
+
+Now when we talk about
+actually using a service mesh,
+
+the interesting question is, well,
+
+what APIs should I use?
+
+One of the things we've developed in
+
+conjunction with a variety
+of other people in
+
+the container space is this idea of
+
+the service mesh Interface, or SMI.
+
+The SMI is a collection of APIs
+
+that register themselves
+with Kubernetes.
+
+Then there are providers
+that implement those things.
+
+So you can have consul
+implement those APIs.
+
+You can have Istio
+implement those APIs.
+
+You can have Linkerd
+implement those APIs.
+
+What this allows you to do
+is standardize tooling and
+
+your own production
+experience on top of
+
+an API that isn't tightly bound
+to any particular implementation.
+
+Which means that in
+different environments,
+
+perhaps in Azure versus on the Edge,
+
+you can make different decisions.
+
+Or if you come to a place
+
+where a particular implementation
+isn't working for you,
+
+or you can't get support for it,
+
+you can switch
+implementations without
+
+having to rebuild your entire system.
+
+So hopefully that gives you a
+perspective about how service meshes
+
+can help you build more
+reliable applications,
+
+and how you can use SMI to
+implement that service mesh.
+
+[MUSIC]
+

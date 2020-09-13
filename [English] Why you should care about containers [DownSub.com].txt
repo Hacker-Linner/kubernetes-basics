@@ -1,0 +1,352 @@
+[MUSIC]
+
+>> So, containers have
+taken the world by
+
+storm over the last four, five years,
+
+but I wanted to take
+a little bit of a look
+
+back maybe for those of you
+who are only just getting
+
+into Docker or containers or
+Kubernetes or perhaps to provide
+
+a brief review for some of
+you who've been living it for
+
+a while of why
+
+this whole thing came into
+existence in the first place.
+
+I think to understand why,
+
+you should cast yourself back into
+the world of cloud circa 2012.
+
+The truth is that for most of us,
+
+we were managing virtual machines,
+
+and they were cluttered things,
+
+they had all sorts of
+different components on them.
+
+They had SSH servers,
+
+they had monitoring, they
+had your application itself.
+
+It was hard to know
+exactly what was going on,
+
+and the truth is that most of
+the time when we're managing them,
+
+we're managing them with
+some imperative script.
+
+Maybe this was a Bash script,
+
+maybe it was something
+like Chef or Puppet,
+
+but in general, it was something
+that we ran on the VM.
+
+Maybe it worked,
+maybe it didn't work.
+
+It was difficult to
+understand if it failed,
+
+how to reapply it,
+
+and everything else like that.
+
+In this context, there was a move
+
+to what became known as
+immutable infrastructure,
+
+and the first way is that
+immutable infrastructure
+
+came into existence was to say,
+
+let's actually just capture
+this whole thing into a VM image.
+
+This way, by using a VM image,
+
+everything is immutable, it never
+
+changes and always deploys
+exactly the same way.
+
+I don't worry about how did
+I make certain changes.
+
+Did I login at the command prompt
+and type something like apt-get?
+
+I know exactly what's going on,
+
+I don't do any of this stuff.
+
+But the VM images themselves,
+
+while they were great from
+an architectural perspective,
+
+they were really heavy from
+a developer perspective.
+
+So, into that world came
+the idea of saying, hey,
+
+let's take that VM image actually
+
+and let's turn it into
+a container image,
+
+much lighter weight thing.
+
+Instead of being
+hundreds of megabytes,
+
+maybe a good container image
+is 20 megabytes.
+
+We'll separate out the
+app from the kernel,
+
+and there'll be this distance
+where I can say, you know what?
+
+When I care about my application,
+
+I think about my container image.
+
+When I care about
+the operating system,
+
+I think about the kernel.
+
+That decomposition and
+that separation of concerns
+
+really made the artifacts
+something that was worth,
+
+which made it easier for
+
+application developers to think about
+
+building and deploying
+the application.
+
+But that wasn't the only reason,
+
+just being able to separate out
+
+your application from the rest
+of your operating system.
+
+There was another part
+of what Docker supplied,
+
+which was the cloud repository.
+
+So, in any real application,
+
+not only do you have to build
+and package your application,
+
+but you actually have to
+distribute it around the world.
+
+So, I have a laptop here where
+I've actually built up my app.
+
+But how do I get it to
+
+a data center that's
+connected to the network?
+
+How do I get it to the cloud somehow?
+
+How do I get it to multiple clouds
+all around the world?
+
+Sorry, picture of the world here,
+
+it's not working out so hot.
+
+How do I do all of that?
+
+Well, it turns out that
+
+the container repository provided
+exactly that capability.
+
+So, you're going to
+have a repository like
+
+the Azure Container Registry or
+
+many other container registries
+or the Docker container registry.
+
+The developer can push
+their container image up,
+
+and they can pull that image
+
+wherever it needs to be:
+into their data center,
+
+into the cloud, or
+even around the world.
+
+So, now, we have
+this immutable infrastructure,
+
+so we can get rid of
+all these scripts,
+
+we can have guarantees that your
+
+application's going to deploy
+correctly every single time,
+
+but we've also gained
+a way of distributing
+
+that same application all
+the way around the world.
+
+Finally, the container
+image itself also
+
+became a way of putting
+
+multiple applications
+onto the same machine.
+
+So, if you have a VM here or
+a physical machine as well,
+
+one of the challenges
+that a lot of people run
+
+into is that on average,
+
+it's something
+like 10 percent utilized.
+
+That obviously means you're paying
+for way more than you're using.
+
+One option is to make
+better applications.
+
+That's often hard to do,
+
+specially with certain languages
+that may be single
+
+threaded or have other constraints,
+
+legacy applications that you
+don't want to re-architect.
+
+If you package up
+your application as a container,
+
+it's actually relatively straightforward
+to put app one, app two,
+
+and app three all on
+the same machine,
+
+drive that utilization up
+
+to 50 or 60 percent
+
+without doing any sort of
+re-architecting at all.
+
+Now, it's important to
+note that this boundary
+
+here is a resource boundary
+that's defined in the kernel.
+
+It'll give you a good way
+
+of isolating in terms
+of things like memory,
+
+that's my memory chip drawing,
+
+as well as in terms of CPU usage,
+
+but it is not, and this
+is important to remember,
+
+it is not a security boundary.
+
+So, it's not going to protect you
+against malicious code that's
+
+in app one from affecting
+a code that's in app two.
+
+If you're trying to use containers
+as a security boundary,
+
+there's a lot of other additional
+technology you need to add on,
+
+something like a hypervisor or
+
+other kinds of isolation technology.
+
+But if what you want to
+do is be able to drive up
+
+your utilization for a bunch of
+applications that you trust,
+
+the container can become
+a great artifact.
+
+But to really make it
+something that is useful,
+
+you need to use
+a container orchestrator.
+
+That's where something
+like Kubernetes comes in.
+
+So, we have a whole
+bunch of machines.
+
+We can use the Kubernetes API
+
+to distribute that
+container image or a lot of
+
+container images onto all
+of the various machines,
+
+but we'll talk about that later.
+
+[MUSIC]
+

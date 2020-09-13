@@ -1,0 +1,363 @@
+[MUSIC].
+
+>> Hey. I'm Brendan and
+we're going to talk
+
+about Admission Controllers,
+
+how they interact with Kubernetes,
+
+and what they can do for you.
+
+Well, I wanted to start by
+just diagramming out what
+
+a request looks like when
+it comes into Kubernetes.
+
+There's basically three parts.
+
+There's obviously the person or
+
+potentially automation that
+is making the API call,
+
+that goes to the API server,
+
+and that eventually goes
+to the etcd database.
+
+That's the basic flow
+of all API requests.
+
+Now, inside of the API server itself,
+
+there is code that does
+RBAC for authorization,
+
+and it also does authentication.
+
+So that allows you to say hey,
+
+this user can or can't do certain
+things within the cluster,
+
+but there's a lot of stuff
+that you might want to
+
+do that involves either modifying or
+
+validating an API object that
+looks within the API object
+
+itself in order to make decisions
+or even make modifications,
+
+and that's where admission
+controllers come in.
+
+So an admission
+controller is something
+
+that happens after a authn and authz,
+
+after a user has been authorized,
+
+an admission controller is
+called and those are usually
+
+web hooks so that
+
+you can dynamically register
+admission controllers.
+
+There are two basic classes
+of admission controllers.
+
+There are validating
+emission controllers,
+
+and there are mutating
+emission controllers.
+
+As you might guess from
+the name of validating
+
+admission controller
+looks at the contents of
+
+an API object and make sure
+that it's valid API object.
+
+We'll talk a little bit about
+some use cases for that.
+
+A mutating admission controller
+
+looks at the API object
+and actually changes it.
+
+So it actually may add things,
+
+it may remove things,
+
+it actually modifies the
+API object on the way in,
+
+and we'll talk about the
+use cases for that as well.
+
+Let's take a look at validating
+admission controllers first.
+
+With validating admission controller,
+
+the goal is to ensure some property
+for an object is maintained.
+
+Generally when we think about this,
+
+we think about this in terms
+of something like policy.
+
+As a concrete example,
+
+the gatekeeper open-source project
+
+that's maintained by
+Azure and others to build
+
+policy for Kubernetes uses
+
+a validating admission controller
+
+to integrate itself into Kubernetes.
+
+Using a policy engine like RegO
+from the open policy agent folks,
+
+you can actually say things
+like I want every replica
+
+set must have at
+least three replicas.
+
+That's something that
+you can't express
+
+with authorization or authentication,
+
+but it is something that you
+can express with policy.
+
+Obviously this is because
+
+you want to make sure
+that someone is doing
+
+a good job replicating their
+application for reliability.
+
+You could also say something like
+
+every object in my Kubernetes
+cluster has to have
+
+an annotation that is the e-mail
+of the owner of that resource.
+
+This becomes really
+valuable when you're
+
+building automation to
+for example reminds
+
+someone that they may have
+a resource that needs to be
+
+deleted or a resource
+that is having a problem.
+
+Having this standardized metadata in
+
+your system makes it much
+easier to build automation,
+
+and really the only way
+to make sure that people
+
+do that is through policy
+
+so that if they don't and they
+
+don't include that in
+the request over here,
+
+that request is rejected.
+
+So obviously building
+an admission controller
+
+can be a complicated thing to do.
+
+So the great thing about
+projects like gatekeepers,
+
+they integrate with admission
+control automatically for you,
+
+you just need to install
+them in your cluster.
+
+But eventually over time,
+
+you may choose to build your own
+
+validating admission
+controller as well.
+
+Let's talk a little bit about
+mutating and mission controllers.
+
+The goals behind a
+mutating emission control
+
+are actually a little bit different,
+
+they're to actually
+change the API object to
+
+enable some defaulting
+or to add capabilities.
+
+So a classic example of
+
+a mutating admission controller
+would be to say, "Hey,
+
+we're going to add
+default CPU limits."
+
+When someone creates a pod,
+
+they don't supply a
+set of resources in
+
+terms of CPU and memory
+that that pod needs,
+
+we're going to actually set
+some defaults for them.
+
+Maybe we'll set the
+default request at
+
+one core and two gigs of memory,
+
+and that's just to ensure that
+the user has a good time.
+
+Because if you create a pod and
+you don't specify resource limits,
+
+generally speaking
+Kubernetes will totally
+
+overpack and overload the cluster,
+
+things will start crashing,
+
+applications won't work properly.
+
+So with a mutating
+admission controller,
+
+we help a user find the
+happy path instead of
+
+leading themselves down a
+place where they're going to
+
+actually do damage to their
+application and to their users.
+
+Another popular example of
+
+a mutating admission
+controller is a service mesh.
+
+Now, service mesh usually involves
+
+a some sidecar container that
+lives next to your app container,
+
+and the easiest way to get that
+sidecar injected is to use
+
+a mutating admission
+controller that modifies
+
+the pod that a user creates
+to add that sidecar.
+
+That way, you don't have to educate
+
+the application developer
+and you don't have to
+
+change any configurations of
+
+the applications themselves
+in order to get the sidecar
+
+applied to all of the
+pods that they create.
+
+Likewise, if you need
+to go from Version 1 to
+
+Version 2 of a particular container,
+
+if you centralize it
+and standardize it
+
+with a mutating admission controller,
+
+you can be sure that you
+can change the version that
+
+everybody is using without requiring
+
+everyone to go in and
+change their YAML files.
+
+I hope that gives you a
+perspective about how
+
+admission controller
+is integrated with
+
+the basic API flow in Kubernetes,
+
+the differences between a
+validating admission controller
+
+for things like policy,
+
+and a mutating admission
+controller for
+
+defaulting or adding new
+sidecars to your applications,
+
+and I hope you see how
+they can empower you to do
+
+even more cool things with
+the containers that you
+
+deploy it to Kubernetes
+on Azure or elsewhere.
+
+[MUSIC].
+

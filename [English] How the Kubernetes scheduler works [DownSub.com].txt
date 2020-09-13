@@ -1,0 +1,352 @@
+>> Hi, I'm Brendan and I'm going
+to talk to you today about
+
+how the scheduler in
+Kubernetes works.
+
+First of all it's
+probably worth noting
+
+what the scheduler actually is.
+
+Well, in Kubernetes you
+have a bunch of machines,
+
+and a single container that
+
+has a single pod that a user is
+asked the Kubernetes API to run.
+
+Well now the scheduler's
+job is to figure
+
+out if we have a scheduler over here,
+
+it says where in
+
+which specific machine should
+this container actually execute.
+
+Should I place it here,
+
+should I place it here,
+
+should I place it here or
+should I place it here?
+
+This is one of the more important
+jobs that any binary does
+
+in Kubernetes because without it
+
+the containers really would have
+
+no idea where they
+should be executing.
+
+It's very similar to the fact
+that in most modern PC's,
+
+your laptop or your phone
+or anything else there's
+
+multiple cores that
+a program could execute on,
+
+and the operating system
+scheduler is responsible for
+
+determining when and where
+a particular program should execute.
+
+So, let's take a look at
+how the scheduler works.
+
+Well, ultimately when you create
+
+a pod that object exists
+in the Kubernetes API,
+
+but it doesn't have a node
+associated with it.
+
+The API object for that pod doesn't
+
+have a machine that has
+been scheduled onto.
+
+The scheduler is continually
+
+watching for pods that
+are in this condition.
+
+It's continually watching
+for pods that have been
+
+created but haven't been
+successfully scheduled.
+
+It is also continually watching
+the state of all of the machines.
+
+Because of course where to
+schedule the container has a lot
+
+to do with the current existing
+state of a particular machine.
+
+What it's thinking about when
+it makes a scheduling decision,
+
+is a mixture of two things.
+
+There are predicates, and
+there are priorities.
+
+Predicates are hard constraints.
+
+They are things that
+cannot be violated.
+
+It might be something like
+
+I need to run on a machine with
+at least four gigabytes of memory.
+
+If a machine doesn't have
+four gigabytes of memory
+
+there is no way that that container
+can be scheduled there.
+
+They eliminate machines entirely
+
+from consideration by the scheduler.
+
+Priorities on
+the other hand are softer.
+
+They say things like,
+"It would be nice if
+
+my application was spread across
+
+a large number of failure domains.
+
+It would be nice if every machine
+in the cluster roughly
+
+had the same amount of
+workload assigned to it."
+
+So, priorities are soft constraints.
+
+They can be violated but give
+you some sense of the badness or
+
+goodness of either satisfying or
+not satisfying the constraint.
+
+The hard constraints are
+a mix of things that are
+
+system supplied and things
+that a user can supply.
+
+So, for example a system
+
+supplied hard constraint might
+
+be what I was talking about
+earlier, the memory requirement.
+
+When you create a pod and you
+say I need four gigabytes of
+
+memory that implies
+a hard requirement.
+
+But likewise, when you create
+
+a pod you could say I want
+to have a node selector,
+
+and that node selector is SSD.
+
+I want to only schedule onto
+machines that have a label of
+
+SSD that indicates that they
+
+have flash hard drive
+available to them.
+
+In that case, this hard constraint is
+
+a node selector hard
+constraint that says
+
+only machines that have that label
+
+pass the predicate for
+this particular node selector.
+
+That's specified by the end-user.
+
+Now, in terms of soft constraints we
+
+mentioned one which is
+something like spreading.
+
+Spreading is the desire
+in general for
+
+an application to be spread
+across multiple machines.
+
+So, that if one machine happens to
+
+fail the entire
+application doesn't fail.
+
+This is obviously not
+a requirement if I have no space,
+
+if I had absolutely no space
+to run three replicas of
+
+your application without putting
+two of them on the same machine,
+
+would you rather that the scheduler
+didn't run one replica?
+
+No, I think you'd
+rather than it placed
+
+two replicas onto a specific machine.
+
+So that's why it's a soft constraint
+that can be violated.
+
+Another example of
+a soft constraint might
+
+be using what's called a taint.
+
+So, a machine can have a taint
+which says, "Slightly sick".
+
+Maybe a machine software
+has detected that
+
+this machine seems like
+it might be going bad.
+
+It's not quite so bad that we
+need to take it out of rotation,
+
+but we've noticed
+an increase number of
+
+error rate when talking to memory
+
+for example or we've noticed
+
+that there may be some bad sectors
+on one of the disks.
+
+A soft constraint would say,
+
+"I would generally prefer that
+it's not a sick machine."
+
+But again, if this is
+the only place where
+
+you can possibly play
+something, it's okay with me.
+
+Now the actual scoring associated
+with this priority can
+
+give you some notion of
+how the scheduler behaves.
+
+So, if I prefer spreading,
+
+if spreading is worth more to me
+than avoiding a sick machine,
+
+then I'm going to actually
+place my application here,
+
+not here because I prefer
+
+spreading. I'll take the fact
+
+that the machine is
+a little bit sick.
+
+If on the other hand,
+
+I prefer to avoiding sick machines
+over my desire for spreading,
+
+well, then I'm going to not place
+
+the container onto the machine
+that has been marked sick.
+
+And instead place
+the container over here where
+
+I violated the spreading constraint
+
+but I have satisfied
+the sickness constraint.
+
+Ultimately, it's this mixture of
+
+predicates that eliminate
+whole machines from consideration
+
+and priorities which give
+you the relative value of
+
+the different machines that indicate
+
+where the container is actually
+going to be scheduled.
+
+In fact, the way that this
+works is the first cut is;
+
+if I start out with
+a complete list of nodes,
+
+I'm going to filter
+
+those nodes by the predicates
+then I'm going to sort
+
+those filtered nodes
+by the priorities and
+
+then ultimately the number
+one node that comes out of
+
+this sort, is going to be the place
+where I schedule my container.
+
+So, I hope that's given
+you a rough introduction
+
+to the role of the scheduler
+in Kubernetes,
+
+and how it figures out where to place
+
+the containers you create
+through the Kubernetes API.
+

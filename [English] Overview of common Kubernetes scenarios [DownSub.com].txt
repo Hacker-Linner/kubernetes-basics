@@ -1,0 +1,193 @@
+[MUSIC]
+
+>> Hi, I'm Brendan Burns
+for Microsoft Azure,
+
+and I'm going to talk to you
+about scenarios for Kubernetes.
+
+So traditionally of course,
+
+Kubernetes has been thought of as
+
+a platform for delivering
+microservices,
+
+services that are
+connected to one another
+
+probably serving some sort
+of web-based application.
+
+But the truth is that
+Kubernetes is turning
+
+into a broader platform
+than just that.
+
+One of the most obvious initial uses
+
+is to say, "Hey, you know what?
+
+Most web-based applications
+have a diurnal peak."
+
+During the day when
+everybody is awake,
+
+there's a lot of traffic, but at
+
+night there tends to
+be a lot less traffic.
+
+So one of the ways you can take
+advantage of Kubernetes is,
+
+sure, deploy your
+microservices-based application.
+
+But if you need to do
+some sort of batch analytics,
+
+you can also deploy that into
+the cluster during the times when
+
+there's less traffic and
+
+therefore less need of
+
+the microservices that are
+delivering your services.
+
+But what we're also seeing is
+
+that the Kubernetes API itself is
+being extended with things like
+
+jobs and scheduled jobs
+
+to make running those sorts
+of applications,
+
+those sorts of
+batch processes even easier.
+
+In addition to that,
+we're actually seeing
+
+the orchestration capabilities of
+
+Kubernetes being taken advantage
+
+of to deliver something
+like workflow.
+
+So in workflow, you
+may do something like,
+
+say, "Hey you know what?
+
+I had to run this job first and
+
+then it's going to trigger this job,
+
+followed by these two jobs,"
+and we're seeing applications like
+
+Brigade which you can
+find at brigade.sh,
+
+rising up to give you
+an easy orchestration.
+
+So you can file a Javascript program
+
+that can define this workflow on
+top of that Kubernetes cluster.
+
+In addition to that, we're
+actually seeing scenarios
+
+where the complexity
+of the application is
+
+made significantly
+easier by the knowledge
+
+that every single person has
+access to the Kubernetes API,
+
+either via a Cloud provider like
+
+the Azure Kubernetes Service
+or an on-premise installation.
+
+Things like TensorFlow or
+
+other AI applications are simply
+
+assuming that you have Kubernetes,
+
+and so you have that Kubernetes API,
+
+and then you're seeing
+TensorFlow install on top of
+
+that to do machine
+learning and other AI.
+
+Then also, this is for model-building
+but likewise turning around
+
+and using that Kubernetes API
+for model serving also.
+
+This may not even be in
+
+the context of these batch jobs
+in diurnal peaks.
+
+People are often times building
+dedicated Kubernetes clusters with
+
+GPU or other hardware like FPGA.
+
+Kubernetes is actually
+learning how to manage
+
+these resources so that if you
+have a limited set of resources,
+
+you can ensure that you're
+not over-scheduling
+
+your GPU or you're not
+over-scheduling an FPGA.
+
+Likewise, if you actually do
+want to build a hybrid cluster,
+
+you can have part of your cluster
+dedicated to GPU and part
+
+of your cluster dedicated to
+more traditional serving workloads.
+
+Kubernetes can be responsible for
+
+landing the right jobs
+in the right places.
+
+So these are just a few
+of the scenarios where
+
+people are finding an opportunity
+
+for Kubernetes to make
+their lives easier
+
+and their application deployment
+more straightforward.
+
+[MUSIC]
+
