@@ -89,6 +89,7 @@ So we took the enthusiasm around
 00:00:49,159 --> 00:00:51,549
 containers that Docker
 managed to generate up.
+所以我们对 Docker 生成的容器产生了热情。
 
 18
 00:00:51,549 --> 00:00:54,019
@@ -98,6 +99,8 @@ So Kubernetes is an orchestrator
 00:00:54,020 --> 00:00:56,735
 for helping you with
 application development.
+
+因此Kubernetes是帮助您进行应用程序开发的协调器。
 
 20
 00:00:56,734 --> 00:00:59,929
@@ -113,10 +116,12 @@ collection of machines.
 00:01:03,770 --> 00:01:06,725
 You have to package
 up that application.
+当您考虑如何将应用程序部署到云端，甚至部署到本地计算机集合时。
 
 23
 00:01:06,724 --> 00:01:07,939
 You have to distribute it,
+你必须分发
 
 24
 00:01:07,939 --> 00:01:09,199
@@ -131,6 +136,8 @@ and you have load balance traffic
 between the various pieces
 of the application.
 
+您必须分发它，必须使其运行，并且必须在应用程序的各个部分之间进行负载平衡流量。
+
 27
 00:01:13,579 --> 00:01:14,929
 Then obviously in an API
@@ -140,10 +147,13 @@ Then obviously in an API
 to introspective and find
 out what's going on.
 
+然后显然可以使用API进行内省并找出正在发生的情况。
+
 29
 00:01:17,555 --> 00:01:21,140
 Before Kubernetes there were a
 few systems bits and pieces,
+在 Kubernetes 之前有一些零碎的系统，
 
 30
 00:01:21,140 --> 00:01:25,040
@@ -163,6 +173,8 @@ for building and constructing
 00:01:30,349 --> 00:01:32,979
 distributed systems that span
 across a bunch of machines.
+
+但是 Kubernetes 才真正将这种分布式系统应用程序环境的思想主流化，以构建和构建跨越一堆机器的分布式系统。
 
 34
 00:01:32,980 --> 00:01:35,000
